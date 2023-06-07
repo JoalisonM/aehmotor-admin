@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-import {styled} from "../../styles"
+import { styled } from "../../styles"
 
 export const Aside = styled("aside", {
   display: "flex",

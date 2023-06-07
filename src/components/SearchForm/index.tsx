@@ -2,12 +2,16 @@ import { MagnifyingGlass } from "phosphor-react"
 
 import { SearchFormContainer } from "./styles";
 
-export const SearchForm = () => {
+interface SearchFormProps {
+  placeholder: string;
+}
+
+export const SearchForm = ({ placeholder }: SearchFormProps) => {
   return (
     <SearchFormContainer>
       <input
         type="text"
-        placeholder="Busque por pessoas"
+        placeholder={placeholder}
       />
 
       <button type="submit">

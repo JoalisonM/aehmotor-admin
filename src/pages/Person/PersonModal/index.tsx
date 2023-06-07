@@ -12,6 +12,7 @@ import {
   MessageError,
 } from "./styles";
 import { usePeople } from "../../../hooks/usePeople";
+import { useEffect } from "react";
 
 const newPessoaFormSchema = z.object({
   nome: z.string().nonempty("O nome é obrigatório"),
@@ -32,24 +33,44 @@ export const PersonModal = () => {
     handleSubmit,
     formState: { isSubmitting, errors },
     reset,
+    setValue,
   } = useForm<NewPessoaFormInputs>({
     resolver: zodResolver(newPessoaFormSchema),
   });
-  const { createPerson } = usePeople();
+  const { createPerson, person, updatePerson } = usePeople();
 
+  useEffect(() => {
+    setValue("nome", person.nome);
+    setValue("email", person.email);
+    setValue("senha", person.senha);
+    setValue("telefone", person.telefone);
+    setValue("nascimento", person.nascimento);
+  }, [person]);
 
   const handleCreateNewPessoa = async (data: NewPessoaFormInputs) => {
     const { nome, email, nascimento, telefone, senha } = data;
 
-    createPerson({
-      nome,
-      email,
-      nascimento,
-      telefone,
-      senha,
-    });
+    if (!person.id) {
+      console.log(data);
+      // createPerson({
+      //   nome,
+      //   email,
+      //   nascimento,
+      //   telefone,
+      //   senha,
+      // });
 
-    reset();
+      reset();
+    } else {
+      updatePerson({
+        id: person.id,
+        nome,
+        email,
+        nascimento,
+        telefone,
+        senha,
+      });
+    }
   }
 
   return (
@@ -57,7 +78,7 @@ export const PersonModal = () => {
       <Overlay />
 
       <Content>
-        <Dialog.Title>Nova Pessoa</Dialog.Title>
+        <Dialog.Title>Pessoa</Dialog.Title>
 
         <CloseButton>
           <X size={24} />
@@ -105,9 +126,15 @@ export const PersonModal = () => {
             {errors.senha && <MessageError>{errors.senha.message}</MessageError>}
           </Row>
 
-          <button type="submit" disabled={isSubmitting}>
-            Cadastrar
-          </button>
+          {person && person.id ? (
+            <button type="submit" disabled={isSubmitting}>
+              Atualizar
+            </button>
+          ) : (
+            <button type="submit" disabled={isSubmitting}>
+              Cadastrar
+            </button>
+          )}
         </form>
       </Content>
     </Dialog.Portal>

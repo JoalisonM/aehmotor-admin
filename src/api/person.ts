@@ -1,8 +1,7 @@
-import {api} from "../lib/axios";
+import { api } from "../lib/axios";
 
 export interface PersonProps {
   id: number;
-  idEndereco: number;
   nome: string;
   email: string;
   nascimento: string;
@@ -46,7 +45,7 @@ export const Person = {
   update(person: UpdatePersonInput) {
     const { id, ...newPerson } = person;
 
-    return api.put( `${uriPerson}/${id}`, newPerson);
+    return api.put(`${uriPerson}/${id}`, newPerson);
   },
 
   delete(id: number) {

@@ -3,6 +3,7 @@ import * as Toast from "@radix-ui/react-toast";
 import { styled, keyframes } from "../../styles";
 
 export const Container = styled("section", {
+  height: "100%",
   maxWidth: "64rem",
   minWidth: "60rem",
   margin: "4rem auto 0",
@@ -24,7 +25,7 @@ export const Header = styled("div", {
   justifyContent: "space-between",
 });
 
-export const NewPersonButton = styled("button", {
+export const NewStudentButton = styled("button", {
   height: "40px",
   border: "0",
   background: "$blue500",
@@ -35,26 +36,11 @@ export const NewPersonButton = styled("button", {
   cursor: "pointer",
 });
 
-export const PersonTable = styled("table", {
+export const StudentTable = styled("table", {
   width: "100%",
   borderCollapse: "separate",
   borderSpacing: "0 0.5rem",
   marginTop: "1.5rem",
-
-  button: {
-    background: "transparent",
-    border: 0,
-    color: "$gray100",
-
-    svg: {
-      cursor: "pointer",
-      transition: "color 0.3s",
-
-      "&:hover": {
-        color: "$red500",
-      },
-    },
-  },
 
   th: {
     textAlign: "left",
@@ -65,12 +51,18 @@ export const PersonTable = styled("table", {
     padding: "1.25rem 1rem",
     background: "$gray700",
 
-    svg: {
-      cursor: "pointer",
-      transition: "color 0.3s",
+    button: {
+      background: "transparent",
+      border: 0,
+      color: "$gray100",
 
-      "&:hover": {
-        color: "$red500",
+      svg: {
+        cursor: "pointer",
+        transition: "color 0.3s",
+
+        "&:hover": {
+          color: "$red500",
+        },
       },
     },
 

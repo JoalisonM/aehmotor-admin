@@ -3,9 +3,9 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as Toast from "@radix-ui/react-toast";
 import { TrashSimple, PencilSimpleLine, X } from "phosphor-react";
 
-import { StudentModal } from "./StudentModal";
-import { StudentProps } from "../../api/student";
-import { useStudents } from "../../hooks/useStudent";
+import { AddressModal } from "./AddressModal";
+import { AddressProps } from "../../api/address";
+import { useAddresses } from "../../hooks/useAddresses";
 import { SearchForm } from "../../components/SearchForm";
 import {
   Container,
@@ -17,77 +17,77 @@ import {
   ToastViewport,
 } from "./styles";
 
-export const Student = () => {
+export const Address = () => {
   const [openToast, setOpenToast] = useState(false);
-  const { students, fetchStudents, deleteStudent, getStudent, setStudent } = useStudents();
+  const { addresses, fetchAddresses, deleteAddress, getAddress, setAddress } = useAddresses();
 
   useEffect(() => {
-    fetchStudents();
-  }, [fetchStudents]);
+    fetchAddresses();
+  }, [fetchAddresses]);
 
-  const handleShowStudent = (id?: number) => {
+  const handleShowAddress = (id?: number) => {
     if (id) {
-      getStudent(id);
+      getAddress(id);
     } else {
-      setStudent({} as StudentProps);
+      setAddress({} as AddressProps);
     }
   };
 
-  const handleDeleteStudent = (id: number) => {
-    deleteStudent(id);
+  const handleDeleteAddress = (id: number) => {
+    deleteAddress(id);
     setOpenToast(true);
   };
 
   return (
     <Container>
       <Header>
-        <h1>Aluno</h1>
+        <h1>Endereço</h1>
         <Dialog.Root>
           <Dialog.Trigger asChild>
             <NewStudentButton
-              onClick={() => handleShowStudent()}
+              onClick={() => handleShowAddress()}
             >
-              Novo aluno
+              Novo endereço
             </NewStudentButton>
           </Dialog.Trigger>
 
-          <StudentModal />
+          <AddressModal />
         </Dialog.Root>
       </Header>
-      <SearchForm placeholder="Buscar por alunos" />
+      <SearchForm placeholder="Buscar por endereços" />
 
       <StudentTable>
         <thead>
           <tr>
             <th>Id</th>
-            <th>IdFaculdade</th>
-            <th>Nome</th>
-            <th>Matrícula</th>
-            <th>Curso</th>
-            <th>Turno</th>
+            <th>IdPessoa</th>
+            <th>IdCidade</th>
+            <th>Cep</th>
+            <th>Numero</th>
+            <th>Logradouro</th>
           </tr>
         </thead>
         <tbody>
-          {students && students.map((student) => (
-            <tr key={student.id}>
-              <td>{student.id}</td>
-              <td>{student.idInstituicaoEnsino}</td>
-              <td>{student.nome}</td>
-              <td>{student.matricula}</td>
-              <td>{student.curso}</td>
-              <td>{student.turno}</td>
+          {addresses && addresses.map((address) => (
+            <tr key={address.id}>
+              <td>{address.id}</td>
+              <td>{address.id_pessoa}</td>
+              <td>{address.id_cidade}</td>
+              <td>{address.cep}</td>
+              <td>{address.numero}</td>
+              <td>{address.logradouro}</td>
               <td>
                 <Dialog.Root>
                   <Dialog.Trigger asChild>
                     <button>
                       <PencilSimpleLine
                         size={16}
-                        onClick={() => handleShowStudent(student.id)}
+                        onClick={() => handleShowAddress(address.id)}
                       />
                     </button>
                   </Dialog.Trigger>
 
-                  <StudentModal />
+                  <AddressModal />
                 </Dialog.Root>
               </td>
               <td>
@@ -95,12 +95,12 @@ export const Student = () => {
                   <button>
                     <TrashSimple
                       size={16}
-                      onClick={() => handleDeleteStudent(student.id)}
+                      onClick={() => handleDeleteAddress(address.id)}
                     />
                   </button>
 
                   <ToastRoot open={openToast} onOpenChange={setOpenToast}>
-                    <ToastTitle>Aluno deletado com sucesso!</ToastTitle>
+                    <ToastTitle>Endereço deletado com sucesso!</ToastTitle>
                   </ToastRoot>
                   <ToastViewport />
                 </Toast.Provider>
