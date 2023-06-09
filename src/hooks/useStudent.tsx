@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useState } from "react";
+import { ReactNode, useCallback, useState } from "react";
 import { createContext, useContextSelector } from "use-context-selector";
 import { Student, StudentProps, CreateStudentInput, UpdateStudentInput } from "../api/student";
 
@@ -42,7 +42,7 @@ export const StudentsContextProvider = ({ children }: StudentsContextProviderPro
     const createStudent = useCallback(
         async (data: CreateStudentInput) => {
             const { nome, email, nascimento, telefone, senha,
-                curso, matricula, turno, idInstituicaoEnsino
+                curso, matricula, turno, id_instituicao_ensino
             } = data;
 
             const response = await Student.create(
@@ -55,7 +55,7 @@ export const StudentsContextProvider = ({ children }: StudentsContextProviderPro
                     curso,
                     matricula,
                     turno,
-                    idInstituicaoEnsino,
+                    id_instituicao_ensino,
                 }
             );
 
@@ -66,12 +66,13 @@ export const StudentsContextProvider = ({ children }: StudentsContextProviderPro
     const updateStudent = useCallback(
         async (data: UpdateStudentInput) => {
             const { id, nome, email, nascimento, telefone, senha,
-                curso, matricula, turno,
+                curso, matricula, turno, id_instituicao_ensino,
             } = data;
 
             const response = await Student.update(
                 {
                 id,
+                id_instituicao_ensino,
                 nome,
                 email,
                 nascimento,
@@ -92,10 +93,6 @@ export const StudentsContextProvider = ({ children }: StudentsContextProviderPro
 
         setStudents((state) => state.filter((student) => student.id !== id));
     }
-
-    // useEffect(() => {
-    //     fetchStudents();
-    // }, [fetchStudents]);
 
     return (
         <StudentsContext.Provider

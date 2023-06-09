@@ -1,25 +1,31 @@
-import { useEffect, useRef, useState } from "react";
-import * as Dialog from "@radix-ui/react-dialog";
+import { useEffect, useState } from "react";
 import * as Toast from "@radix-ui/react-toast";
-import { TrashSimple, PencilSimpleLine, X } from "phosphor-react";
+import * as Dialog from "@radix-ui/react-dialog";
+import { TrashSimple, PencilSimpleLine } from "phosphor-react";
 
-import { AddressModal } from "./AddressModal";
-import { AddressProps } from "../../api/address";
-import { useAddresses } from "../../hooks/useAddresses";
-import { SearchForm } from "../../components/SearchForm";
 import {
-  Container,
   Header,
-  NewStudentButton,
-  StudentTable,
+  Container,
   ToastRoot,
   ToastTitle,
   ToastViewport,
+  NewStudentButton,
 } from "./styles";
+import { AddressModal } from "./AddressModal";
+import { AddressProps } from "../../api/address";
+import { Table } from "../../styles/components/table";
+import { useAddresses } from "../../hooks/useAddresses";
+import { SearchForm } from "../../components/SearchForm";
 
 export const Address = () => {
   const [openToast, setOpenToast] = useState(false);
-  const { addresses, fetchAddresses, deleteAddress, getAddress, setAddress } = useAddresses();
+  const {
+    addresses,
+    getAddress,
+    setAddress,
+    deleteAddress,
+    fetchAddresses,
+  } = useAddresses();
 
   useEffect(() => {
     fetchAddresses();
@@ -56,7 +62,7 @@ export const Address = () => {
       </Header>
       <SearchForm placeholder="Buscar por endereços" />
 
-      <StudentTable>
+      <Table>
         <thead>
           <tr>
             <th>Id</th>
@@ -108,7 +114,7 @@ export const Address = () => {
             </tr>
           ))}
         </tbody>
-      </StudentTable>
+      </Table>
     </Container>
   );
 };

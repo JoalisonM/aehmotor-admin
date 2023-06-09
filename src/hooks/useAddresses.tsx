@@ -41,12 +41,12 @@ export const AddressContextProvider = ({ children }: AddressContextProviderProps
 
   const createAddress = useCallback(
     async (data: CreateAddressInput) => {
-      const { idCidade, idPessoa, cep, numero, complemento, referencia, logradouro } = data;
+      const { id_cidade, id_pessoa, cep, numero, complemento, referencia, logradouro } = data;
 
       const response = await Address.create(
         {
-          idCidade,
-          idPessoa,
+          id_cidade,
+          id_pessoa,
           cep,
           numero,
           complemento,
@@ -56,17 +56,20 @@ export const AddressContextProvider = ({ children }: AddressContextProviderProps
       );
 
       setAddresses((state) => [response.data, ...state]);
+
+      return response.data;
     }, []
   );
 
   const updateAddress = useCallback(
     async (data: UpdateAddressInput) => {
-      const { id, idCidade, cep, numero, complemento, referencia, logradouro } = data;
+      const { id, id_cidade, id_pessoa, cep, numero, complemento, referencia, logradouro } = data;
 
       const response = await Address.update(
         {
           id,
-          idCidade,
+          id_cidade,
+          id_pessoa,
           cep,
           numero,
           complemento,

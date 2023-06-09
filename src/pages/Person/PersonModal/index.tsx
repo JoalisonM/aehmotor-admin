@@ -51,14 +51,13 @@ export const PersonModal = () => {
     const { nome, email, nascimento, telefone, senha } = data;
 
     if (!person.id) {
-      console.log(data);
-      // createPerson({
-      //   nome,
-      //   email,
-      //   nascimento,
-      //   telefone,
-      //   senha,
-      // });
+      createPerson({
+        nome,
+        email,
+        nascimento,
+        telefone,
+        senha,
+      });
 
       reset();
     } else {

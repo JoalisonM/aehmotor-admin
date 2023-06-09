@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import * as z from "zod";
 import { X } from "phosphor-react";
-import { useForm } from "react-hook-form";
 import * as Dialog from "@radix-ui/react-dialog";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
@@ -13,6 +13,8 @@ import {
   MessageError,
 } from "./styles";
 import { useStudents } from "../../../hooks/useStudent";
+import { useColleges } from "../../../hooks/useColleges";
+import { Select } from "../../../components/Select";
 
 const newStudentFormSchema = z.object({
   nome: z.string().nonempty("O nome é obrigatório"),
@@ -25,7 +27,7 @@ const newStudentFormSchema = z.object({
   matricula: z.string().nonempty("A matrícula é obrigatória"),
   curso: z.string().nonempty("O curso é obrigatório"),
   turno: z.string().nonempty("O turno é obrigatório"),
-  idInstituicaoEnsino: z.number().nonnegative("O id tem que ser maior que 0"),
+  id_instituicao_ensino: z.string().nonempty("A faculdade é obrigatória"),
   senha: z.string().min(6, "A senha precisa de no mínimo 6 caracteres"),
 });
 
@@ -33,15 +35,21 @@ type NewStudentFormInputs = z.infer<typeof newStudentFormSchema>
 
 export const StudentModal = () => {
   const {
+    reset,
+    control,
     register,
+    setValue,
     handleSubmit,
     formState: { isSubmitting, errors },
-    reset,
-    setValue,
   } = useForm<NewStudentFormInputs>({
     resolver: zodResolver(newStudentFormSchema),
   });
+  const { colleges, fetchColleges } = useColleges();
   const { createStudent, student, updateStudent } = useStudents();
+
+  useEffect(() => {
+    fetchColleges();
+  }, [fetchColleges]);
 
   useEffect(() => {
     setValue("nome", student.nome);
@@ -51,29 +59,28 @@ export const StudentModal = () => {
     setValue("curso", student.curso);
     setValue("matricula", student.matricula);
     setValue("turno", student.turno);
-    setValue("idInstituicaoEnsino", student.idInstituicaoEnsino);
+    setValue("id_instituicao_ensino", String(student.id_instituicao_ensino));
     setValue("nascimento", student.nascimento);
   }, [student]);
 
   const handleCreateNewStudent = async (data: NewStudentFormInputs) => {
+    console.log("data: ", data);
     const { nome, email, nascimento, telefone, senha,
-      curso, matricula, turno, idInstituicaoEnsino
+      curso, matricula, turno, id_instituicao_ensino
     } = data;
 
-    console.log("nascimento: ", nascimento);
-
     if (!student.id) {
-      createStudent({
-        nome,
-        email,
-        nascimento,
-        telefone,
-        senha,
-        curso,
-        matricula,
-        turno,
-        idInstituicaoEnsino,
-      });
+      // createStudent({
+      //   nome,
+      //   email,
+      //   nascimento,
+      //   telefone,
+      //   senha,
+      //   curso,
+      //   matricula,
+      //   turno,
+      //   id_instituicao_ensino: Number(id_instituicao_ensino),
+      // });
 
       reset();
     } else {
@@ -87,6 +94,7 @@ export const StudentModal = () => {
         curso,
         matricula,
         turno,
+        id_instituicao_ensino: Number(id_instituicao_ensino),
       });
     }
   }
@@ -134,6 +142,27 @@ export const StudentModal = () => {
               {...register("nascimento")}
             />
             {errors.nascimento && <MessageError>{errors.nascimento.message}</MessageError>}
+          </Fieldset>
+          <Fieldset>
+            <Controller
+              name="id_instituicao_ensino"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  items={colleges}
+                  ref={field.ref}
+                  value={field.value}
+                  onChangeValue={field.onChange}
+                  label="Instituições"
+                  placeholder="Instituição de ensino"
+                  options={{
+                    title: "nome",
+                    value: "id",
+                  }}
+                />
+              )}
+            />
+            {errors.id_instituicao_ensino && <MessageError>{errors.id_instituicao_ensino.message}</MessageError>}
           </Fieldset>
           <Fieldset>
             <input

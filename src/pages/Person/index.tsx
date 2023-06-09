@@ -1,25 +1,31 @@
-import { useEffect, useRef, useState } from "react";
-import * as Dialog from "@radix-ui/react-dialog";
+import { useEffect, useState } from "react";
 import * as Toast from "@radix-ui/react-toast";
-import { TrashSimple, PencilSimpleLine, X } from "phosphor-react";
+import * as Dialog from "@radix-ui/react-dialog";
+import { TrashSimple, PencilSimpleLine } from "phosphor-react";
 
-import { PersonModal } from "./PersonModal";
-import { PersonProps } from "../../api/person";
-import { usePeople } from "../../hooks/usePeople";
-import { SearchForm } from "../../components/SearchForm";
 import {
-  Container,
   Header,
-  NewPersonButton,
-  PersonTable,
+  Container,
   ToastRoot,
   ToastTitle,
   ToastViewport,
+  NewPersonButton,
 } from "./styles";
+import { PersonModal } from "./PersonModal";
+import { PersonProps } from "../../api/person";
+import { usePeople } from "../../hooks/usePeople";
+import { Table } from "../../styles/components/table";
+import { SearchForm } from "../../components/SearchForm";
 
 export const Person = () => {
   const [openToast, setOpenToast] = useState(false);
-  const { people, fetchPeople, deletePerson, getPerson, setPerson } = usePeople();
+  const {
+    people,
+    getPerson,
+    setPerson,
+    fetchPeople,
+    deletePerson,
+  } = usePeople();
 
   useEffect(() => {
     fetchPeople();
@@ -56,7 +62,7 @@ export const Person = () => {
       </Header>
       <SearchForm placeholder="Buscar por pessoas" />
 
-      <PersonTable>
+      <Table>
         <thead>
           <tr>
             <th>Id</th>
@@ -102,7 +108,7 @@ export const Person = () => {
             </tr>
           ))}
         </tbody>
-      </PersonTable>
+      </Table>
     </Container>
   );
 };

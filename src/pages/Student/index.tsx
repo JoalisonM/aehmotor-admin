@@ -1,25 +1,31 @@
-import { useEffect, useRef, useState } from "react";
-import * as Dialog from "@radix-ui/react-dialog";
+import { useEffect, useState } from "react";
 import * as Toast from "@radix-ui/react-toast";
-import { TrashSimple, PencilSimpleLine, X } from "phosphor-react";
+import * as Dialog from "@radix-ui/react-dialog";
+import { TrashSimple, PencilSimpleLine} from "phosphor-react";
 
-import { StudentModal } from "./StudentModal";
-import { StudentProps } from "../../api/student";
-import { useStudents } from "../../hooks/useStudent";
-import { SearchForm } from "../../components/SearchForm";
 import {
-  Container,
   Header,
-  NewStudentButton,
-  StudentTable,
+  Container,
   ToastRoot,
   ToastTitle,
   ToastViewport,
+  NewStudentButton,
 } from "./styles";
+import { StudentModal } from "./StudentModal";
+import { StudentProps } from "../../api/student";
+import { useStudents } from "../../hooks/useStudent";
+import { Table } from "../../styles/components/table";
+import { SearchForm } from "../../components/SearchForm";
 
 export const Student = () => {
   const [openToast, setOpenToast] = useState(false);
-  const { students, fetchStudents, deleteStudent, getStudent, setStudent } = useStudents();
+  const {
+    students,
+    getStudent,
+    setStudent,
+    fetchStudents,
+    deleteStudent,
+  } = useStudents();
 
   useEffect(() => {
     fetchStudents();
@@ -56,7 +62,7 @@ export const Student = () => {
       </Header>
       <SearchForm placeholder="Buscar por alunos" />
 
-      <StudentTable>
+      <Table>
         <thead>
           <tr>
             <th>Id</th>
@@ -71,7 +77,7 @@ export const Student = () => {
           {students && students.map((student) => (
             <tr key={student.id}>
               <td>{student.id}</td>
-              <td>{student.idInstituicaoEnsino}</td>
+              <td>{student.id_instituicao_ensino}</td>
               <td>{student.nome}</td>
               <td>{student.matricula}</td>
               <td>{student.curso}</td>
@@ -108,7 +114,7 @@ export const Student = () => {
             </tr>
           ))}
         </tbody>
-      </StudentTable>
+      </Table>
     </Container>
   );
 };

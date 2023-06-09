@@ -2,12 +2,12 @@ import { api } from "../lib/axios";
 
 export interface StudentProps {
   id: number;
+  id_instituicao_ensino: number;
   nome: string;
   email: string;
   nascimento: string;
   telefone: string;
   senha: string;
-  idInstituicaoEnsino: number;
   curso: string;
   matricula: string;
   turno: string;
@@ -19,7 +19,7 @@ export interface CreateStudentInput {
   nascimento: string;
   telefone: string;
   senha: string;
-  idInstituicaoEnsino: number;
+  id_instituicao_ensino: number;
   curso: string;
   matricula: string;
   turno: string;
@@ -27,6 +27,7 @@ export interface CreateStudentInput {
 
 export interface UpdateStudentInput {
   id: number;
+  id_instituicao_ensino: number;
   nome: string;
   email: string;
   nascimento: string;

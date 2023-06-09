@@ -16,6 +16,10 @@ export const Overlay = styled(Dialog.Overlay, {
   position: "fixed",
   inset: "0", // top: 0, bottom: 0, right: 0, left: 0
   background: "rgba(0, 0, 0, 0.75)",
+  display: 'grid',
+  placeItems: 'center',
+  padding: '3rem',
+  overflowY: 'auto',
   animation: `${overlayShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
 });
 
@@ -25,7 +29,7 @@ export const Content = styled(Dialog.Content, {
   borderRadius: "6px",
   padding: "2.5rem 3rem",
   background: "$gray800",
-  overflow: "scroll",
+  overflowY: 'auto',
 
   position: "fixed",
   top: "50%",

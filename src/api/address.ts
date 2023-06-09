@@ -5,7 +5,7 @@ export interface AddressProps {
   id_cidade: number;
   id_pessoa: number;
   cep: string;
-  numero: string;
+  numero: number;
   complemento: string;
   referencia: string;
   logradouro: string;
@@ -15,7 +15,7 @@ export interface CreateAddressInput {
   id_cidade: number;
   id_pessoa: number;
   cep: string;
-  numero: string;
+  numero: number;
   complemento: string;
   referencia: string;
   logradouro: string;
@@ -24,8 +24,9 @@ export interface CreateAddressInput {
 export interface UpdateAddressInput {
   id: number;
   id_cidade: number;
+  id_pessoa: number;
   cep: string;
-  numero: string;
+  numero: number;
   complemento: string;
   referencia: string;
   logradouro: string;

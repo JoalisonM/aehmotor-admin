@@ -53,6 +53,13 @@ export const StyledItem = styled(Select.Item, {
   },
 });
 
+export const SelectLabel = styled(Select.Label, {
+  padding: '0 25px',
+  fontSize: '$sm',
+  lineHeight: '25px',
+  color: "$gray400",
+});
+
 export const SelectSeparator = styled(Select.Separator, {
   height: 1,
   backgroundColor: "$blue400",

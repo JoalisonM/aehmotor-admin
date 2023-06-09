@@ -26,7 +26,7 @@ const cities = [
     nome: "Guarabira",
     codigoIbge: 2506301,
   },
-]
+];
 
 const newAddressFormSchema = z.object({
   id_cidade: z.string().nonempty("A cidade é obrigatória"),
@@ -52,11 +52,7 @@ export const AddressModal = () => {
   });
   const { people, fetchPeople } = usePeople();
   // const { cities, fetchCities } = useCities();
-  const { address, fetchAddresses, createAddress, updateAddress } = useAddresses();
-
-  useEffect(() => {
-    fetchAddresses();
-  }, [fetchAddresses]);
+  const { address, createAddress, updateAddress } = useAddresses();
 
   useEffect(() => {
     fetchPeople();
@@ -67,7 +63,7 @@ export const AddressModal = () => {
       setValue("id_cidade", String(address.id_cidade));
       setValue("id_pessoa", String(address.id_pessoa));
       setValue("cep", address.cep);
-      setValue("numero", address.numero);
+      setValue("numero", String(address.numero));
       setValue("complemento", address.complemento);
       setValue("referencia", address.referencia);
       setValue("logradouro", address.logradouro);
@@ -84,7 +80,7 @@ export const AddressModal = () => {
         id_cidade: Number(id_cidade),
         id_pessoa: Number(id_pessoa),
         cep,
-        numero,
+        numero: Number(numero),
         complemento,
         referencia,
         logradouro,
@@ -95,8 +91,9 @@ export const AddressModal = () => {
       updateAddress({
         id: address.id,
         id_cidade: Number(id_cidade),
+        id_pessoa: Number(id_pessoa),
         cep,
-        numero,
+        numero: Number(numero),
         complemento,
         referencia,
         logradouro,
@@ -106,101 +103,101 @@ export const AddressModal = () => {
 
   return (
     <Dialog.Portal>
-      <Overlay />
+      <Overlay>
+        <Content>
+          <Dialog.Title>Endereço</Dialog.Title>
 
-      <Content>
-        <Dialog.Title>Endereço</Dialog.Title>
+          <CloseButton>
+            <X size={24} />
+          </CloseButton>
 
-        <CloseButton>
-          <X size={24} />
-        </CloseButton>
+          <form onSubmit={handleSubmit(handleCreateNewAddress)}>
+            <Fieldset>
+              <input
+                type="text"
+                placeholder="Cep"
+                {...register("cep")}
+              />
+              {errors.cep && <MessageError>{errors.cep.message}</MessageError>}
+            </Fieldset>
+            <Fieldset>
+              <input
+                type="text"
+                placeholder="Logradouro"
+                {...register("logradouro")}
+              />
+              {errors.logradouro && <MessageError>{errors.logradouro.message}</MessageError>}
+            </Fieldset>
+            <Fieldset>
+              <input
+                type="text"
+                placeholder="Número"
+                {...register("numero")}
+              />
+              {errors.numero && <MessageError>{errors.numero.message}</MessageError>}
+            </Fieldset>
+            <Fieldset>
+              <input
+                type="text"
+                placeholder="Referência"
+                {...register("referencia")}
+              />
+              {errors.referencia && <MessageError>{errors.referencia.message}</MessageError>}
+            </Fieldset>
+            <Fieldset>
+              <input
+                type="text"
+                placeholder="Complemento"
+                {...register("complemento")}
+              />
+              {errors.complemento && <MessageError>{errors.complemento.message}</MessageError>}
+            </Fieldset>
 
-        <form onSubmit={handleSubmit(handleCreateNewAddress)}>
-          <Fieldset>
-            <input
-              type="text"
-              placeholder="Cep"
-              {...register("cep")}
-            />
-            {errors.cep && <MessageError>{errors.cep.message}</MessageError>}
-          </Fieldset>
-          <Fieldset>
-            <input
-              type="text"
-              placeholder="Logradouro"
-              {...register("logradouro")}
-            />
-            {errors.logradouro && <MessageError>{errors.logradouro.message}</MessageError>}
-          </Fieldset>
-          <Fieldset>
-            <input
-              type="text"
-              placeholder="Número"
-              {...register("numero")}
-            />
-            {errors.numero && <MessageError>{errors.numero.message}</MessageError>}
-          </Fieldset>
-          <Fieldset>
-            <input
-              type="text"
-              placeholder="Referência"
-              {...register("referencia")}
-            />
-            {errors.referencia && <MessageError>{errors.referencia.message}</MessageError>}
-          </Fieldset>
-          <Fieldset>
-            <input
-              type="text"
-              placeholder="Complemento"
-              {...register("complemento")}
-            />
-            {errors.complemento && <MessageError>{errors.complemento.message}</MessageError>}
-          </Fieldset>
+            <Fieldset>
+              <Select
+                placeholder="Cidade"
+                {...register("id_pessoa")}
+              >
+                {people && people.map((person) => (
+                  <Option
+                    key={person.id}
+                    value={person.id}
+                  >
+                    {person.nome}
+                  </Option>
+                ))}
+              </Select>
+              {errors.id_pessoa && <MessageError>{errors.id_pessoa.message}</MessageError>}
+            </Fieldset>
+            <Fieldset>
+              <Select
+                placeholder="Cidade"
+                {...register("id_cidade")}
+              >
+                {cities.map((city) => (
+                  <Option
+                    key={city.codigoIbge}
+                    value={city.codigoIbge}
+                  >
+                    {city.nome}
+                  </Option>
+                ))}
+              </Select>
+              {errors.id_cidade && <MessageError>{errors.id_cidade.message}</MessageError>}
+            </Fieldset>
 
-          <Fieldset>
-            <Select
-              placeholder="Cidade"
-              {...register("id_pessoa")}
-            >
-              {people && people.map((person) => (
-                <Option
-                  key={person.id}
-                  value={person.id}
-                >
-                  {person.nome}
-                </Option>
-              ))}
-            </Select>
-            {errors.id_pessoa && <MessageError>{errors.id_pessoa.message}</MessageError>}
-          </Fieldset>
-          <Fieldset>
-            <Select
-              placeholder="Cidade"
-              {...register("id_cidade")}
-            >
-              {cities.map((city) => (
-                <Option
-                  key={city.codigoIbge}
-                  value={city.codigoIbge}
-                >
-                  {city.nome}
-                </Option>
-              ))}
-            </Select>
-            {errors.id_cidade && <MessageError>{errors.id_cidade.message}</MessageError>}
-          </Fieldset>
-
-          {address && address.id ? (
-            <button type="submit" disabled={isSubmitting}>
-              Atualizar
-            </button>
-          ) : (
-            <button type="submit" disabled={isSubmitting}>
-              Cadastrar
-            </button>
-          )}
-        </form>
-      </Content>
+            {address && address.id ? (
+              <button type="submit" disabled={isSubmitting}>
+                Atualizar
+              </button>
+            ) : (
+              <button type="submit" disabled={isSubmitting}>
+                Cadastrar
+              </button>
+            )}
+          </form>
+        </Content>
+      </Overlay>
     </Dialog.Portal>
   );
 };
