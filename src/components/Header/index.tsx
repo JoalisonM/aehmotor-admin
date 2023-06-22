@@ -18,10 +18,7 @@ export const Header = (props: HeaderProps) => {
       <h1>{title}</h1>
       <Dialog.Root>
         <Dialog.Trigger asChild>
-          <Button
-            variant="default"
-            onClick={() => onShowModal()}
-          >
+          <Button onClick={() => onShowModal()} >
             {buttonTitle}
           </Button>
         </Dialog.Trigger>

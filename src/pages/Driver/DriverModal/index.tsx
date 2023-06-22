@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import * as z from "zod";
 import { format } from "date-fns";
 import { X } from "phosphor-react";
@@ -13,10 +14,9 @@ import {
   MessageError,
 } from "./styles";
 import { useDrivers } from "../../../hooks/useDrivers";
-import { useEffect } from "react";
-import { Option, Select } from "../../../styles/components/select";
 import { useVehicles } from "../../../hooks/useVehicles";
-import { Label } from "../../../styles/components/label";
+import { Button, Label } from "../../../styles/components";
+import { Option, Select } from "../../../styles/components/select";
 
 const newDriverFormSchema = z.object({
   nome: z.string().nonempty("O nome é obrigatório")
@@ -178,13 +178,13 @@ export const DriverModal = () => {
           </Row>
 
           {driver && driver.id ? (
-            <button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting}>
               Atualizar
-            </button>
+            </Button>
           ) : (
-            <button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting}>
               Cadastrar
-            </button>
+            </Button>
           )}
         </form>
       </Content>

@@ -12,12 +12,12 @@ import {
   CloseButton,
   MessageError,
 } from "./styles";
-import { useEmployees } from "../../../hooks/useEmployees";
 import { AddressFields } from "./Address";
+import { usePeople } from "../../../hooks/usePeople";
+import { Button, Label } from "../../../styles/components";
+import { useEmployees } from "../../../hooks/useEmployees";
 import { usePrefectures } from "../../../hooks/usePrefectures";
 import { Option, Select } from "../../../styles/components/select";
-import { usePeople } from "../../../hooks/usePeople";
-import { Label } from "../../../styles/components/label";
 
 const newCollegeFormSchema = z.object({
   nome: z.string().nonempty("O nome é obrigatório")
@@ -142,13 +142,13 @@ export const CityHallModal = () => {
             />
 
             {cityHall && cityHall.id ? (
-              <button type="submit" disabled={isSubmitting}>
+              <Button type="submit" disabled={isSubmitting}>
                 Atualizar
-              </button>
+              </Button>
             ) : (
-              <button type="submit" disabled={isSubmitting}>
+              <Button type="submit" disabled={isSubmitting}>
                 Cadastrar
-              </button>
+              </Button>
             )}
           </form>
         </Content>

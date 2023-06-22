@@ -110,7 +110,7 @@ export const CitiesRoute = () => {
               <td>
                 <AlertDialogRadix.Root>
                   <AlertDialogRadix.Trigger asChild>
-                    <Button variant="icon">
+                    <Button variant="icon" hover="danger">
                       <TrashSimple size={16} />
                     </Button>
                   </AlertDialogRadix.Trigger>

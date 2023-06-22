@@ -13,7 +13,7 @@ import {
   MessageError,
 } from "./styles";
 import { useVehicles } from "../../../hooks/useVehicles";
-import { Label } from "../../../styles/components/label";
+import { Button, Label } from "../../../styles/components";
 
 const newVehicleFormSchema = z.object({
   placa: z.string().nonempty("A placa é obrigatória")
@@ -127,13 +127,13 @@ export const VehicleModal = () => {
             </Fieldset>
 
             {vehicle && vehicle.id ? (
-              <button type="submit" disabled={isSubmitting}>
+              <Button type="submit" disabled={isSubmitting}>
                 Atualizar
-              </button>
+              </Button>
             ) : (
-              <button type="submit" disabled={isSubmitting}>
+              <Button type="submit" disabled={isSubmitting}>
                 Cadastrar
-              </button>
+              </Button>
             )}
           </form>
         </Content>

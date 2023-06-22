@@ -13,9 +13,9 @@ import {
   MessageError,
 } from "./styles";
 import { usePeople } from "../../../hooks/usePeople";
+import { Button, Label } from "../../../styles/components";
 import { useAddresses } from "../../../hooks/useAddresses";
 import { Select, Option } from "../../../styles/components/select";
-import { Label } from "../../../styles/components/label";
 
 const cities = [
   {
@@ -215,13 +215,13 @@ export const AddressModal = () => {
             </Fieldset>
 
             {address && address.id ? (
-              <button type="submit" disabled={isSubmitting}>
+              <Button type="submit" disabled={isSubmitting}>
                 Atualizar
-              </button>
+              </Button>
             ) : (
-              <button type="submit" disabled={isSubmitting}>
+              <Button type="submit" disabled={isSubmitting}>
                 Cadastrar
-              </button>
+              </Button>
             )}
           </form>
         </Content>

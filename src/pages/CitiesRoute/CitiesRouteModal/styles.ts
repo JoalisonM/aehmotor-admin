@@ -47,25 +47,8 @@ export const Content = styled(Dialog.Content, {
 
     "button[type='submit']": {
       height: "50px",
-      border: "0",
-      background: "$blue500",
-      color: "$gray100",
-      fontWeight: "bold",
-      padding: "0 1.25rem",
-      borderRadius: "6px",
       marginTop: "1.5rem",
-      cursor: "pointer",
-
-      "&:disabled": {
-        opacity: "0.6",
-        cursor: "not-allowed",
-      },
-
-"      &:not(:disabled):hover": {
-        filter: "brightness(0.8)",
-        transition: "filter 0.2s",
-      }
-    }
+    },
   }
 });
 

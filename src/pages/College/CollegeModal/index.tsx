@@ -12,12 +12,11 @@ import {
   CloseButton,
   MessageError,
 } from "./styles";
-import { usePeople } from "../../../hooks/usePeople";
-import { useAddresses } from "../../../hooks/useAddresses";
-import { useColleges } from "../../../hooks/useColleges";
-import { AddressProps } from "../../../api/address";
 import { AddressFields } from "./Address";
-import { Label } from "../../../styles/components/label";
+import { usePeople } from "../../../hooks/usePeople";
+import { useColleges } from "../../../hooks/useColleges";
+import { useAddresses } from "../../../hooks/useAddresses";
+import { Button, Label } from "../../../styles/components";
 
 const newCollegeFormSchema = z.object({
   nome: z.string().nonempty("O nome é obrigatório")
@@ -59,7 +58,6 @@ export const CollegeModal = () => {
     resolver: zodResolver(newCollegeFormSchema),
   });
   const { people, fetchPeople } = usePeople();
-  const { address, getAddress, createAddress, updateAddress } = useAddresses();
   const { college, createCollege, updateCollege } = useColleges();
 
   useEffect(() => {
@@ -134,13 +132,13 @@ export const CollegeModal = () => {
             />
 
             {college && college.id ? (
-              <button type="submit" disabled={isSubmitting}>
+              <Button type="submit" disabled={isSubmitting}>
                 Atualizar
-              </button>
+              </Button>
             ) : (
-              <button type="submit" disabled={isSubmitting}>
+              <Button type="submit" disabled={isSubmitting}>
                 Cadastrar
-              </button>
+              </Button>
             )}
           </form>
         </Content>

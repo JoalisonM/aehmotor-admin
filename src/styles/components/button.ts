@@ -9,6 +9,7 @@ export const Button = styled('button', {
   gap: '0.75rem',
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'center',
 
   variants: {
     variant: {
@@ -63,5 +64,9 @@ export const Button = styled('button', {
         },
       },
     },
+  },
+
+  defaultVariants: {
+    variant: 'default',
   }
 });

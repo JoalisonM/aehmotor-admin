@@ -15,7 +15,7 @@ import {
 } from "./styles";
 import { useStudents } from "../../../hooks/useStudent";
 import { useColleges } from "../../../hooks/useColleges";
-import { Label } from "../../../styles/components/label";
+import { Button, Label } from "../../../styles/components";
 import { Select, Option } from "../../../styles/components/select";
 
 const newStudentFormSchema = z.object({
@@ -226,13 +226,13 @@ export const StudentModal = () => {
           </Fieldset>
 
           {student && student.id ? (
-            <button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting}>
               Atualizar
-            </button>
+            </Button>
           ) : (
-            <button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting}>
               Cadastrar
-            </button>
+            </Button>
           )}
         </form>
       </Content>

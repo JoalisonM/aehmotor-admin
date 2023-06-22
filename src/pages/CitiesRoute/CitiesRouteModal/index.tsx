@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import * as z from "zod";
 import { X } from "phosphor-react";
 import { useForm } from "react-hook-form";
@@ -12,13 +13,12 @@ import {
   MessageError,
 } from "./styles";
 import { useDrivers } from "../../../hooks/useDrivers";
-import { useEffect } from "react";
-import { Option, Select } from "../../../styles/components/select";
 import { useVehicles } from "../../../hooks/useVehicles";
-import { useCitiesRoutes } from "../../../hooks/useCitiesRoutes";
-import { usePrefectures } from "../../../hooks/usePrefectures";
 import { useColleges } from "../../../hooks/useColleges";
-import { Label } from "../../../styles/components/label";
+import { Button, Label } from "../../../styles/components";
+import { usePrefectures } from "../../../hooks/usePrefectures";
+import { useCitiesRoutes } from "../../../hooks/useCitiesRoutes";
+import { Option, Select } from "../../../styles/components/select";
 
 const newCitiesRouteModalFormSchema = z.object({
   id_veiculo: z.number(),
@@ -263,13 +263,13 @@ export const CitiesRouteModal = () => {
           </Row>
 
           {citiesRoute && citiesRoute.id ? (
-            <button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting}>
               Atualizar
-            </button>
+            </Button>
           ) : (
-            <button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting}>
               Cadastrar
-            </button>
+            </Button>
           )}
         </form>
       </Content>

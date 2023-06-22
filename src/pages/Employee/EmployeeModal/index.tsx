@@ -13,9 +13,9 @@ import {
   CloseButton,
   MessageError,
 } from "./styles";
-import { InputPassword } from "../../../components/InputPassword";
 import { useEmployees } from "../../../hooks/useEmployees";
-import { Label } from "../../../styles/components/label";
+import { Button, Label } from "../../../styles/components";
+import { InputPassword } from "../../../components/InputPassword";
 
 const newEmployeeFormSchema = z.object({
   nome: z.string().nonempty("O nome é obrigatório")
@@ -169,13 +169,13 @@ export const EmployeeModal = () => {
           </Fieldset>
 
           {employee && employee.id ? (
-            <button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting}>
               Atualizar
-            </button>
+            </Button>
           ) : (
-            <button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting}>
               Cadastrar
-            </button>
+            </Button>
           )}
         </form>
       </Content>
