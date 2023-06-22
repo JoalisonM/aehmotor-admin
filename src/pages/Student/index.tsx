@@ -1,30 +1,26 @@
-import { useEffect, useState } from "react";
-import * as Toast from "@radix-ui/react-toast";
+import { useEffect } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { TrashSimple, PencilSimpleLine} from "phosphor-react";
+import { TrashSimple, PencilSimpleLine } from "phosphor-react";
+import * as AlertDialogRadix from '@radix-ui/react-alert-dialog';
 
-import {
-  Header,
-  Container,
-  ToastRoot,
-  ToastTitle,
-  ToastViewport,
-  NewStudentButton,
-} from "./styles";
+import { Container } from "./styles";
 import { StudentModal } from "./StudentModal";
 import { StudentProps } from "../../api/student";
 import { useStudents } from "../../hooks/useStudent";
 import { Table } from "../../styles/components/table";
 import { SearchForm } from "../../components/SearchForm";
+import { AlertDialog } from "../../components/AlertDialog";
+import { Button } from "../../styles/components/button";
+import { Header } from "../../components/Header";
 
 export const Student = () => {
-  const [openToast, setOpenToast] = useState(false);
   const {
     students,
     getStudent,
     setStudent,
     fetchStudents,
     deleteStudent,
+    getStudentByName,
   } = useStudents();
 
   useEffect(() => {
@@ -41,26 +37,26 @@ export const Student = () => {
 
   const handleDeleteStudent = (id: number) => {
     deleteStudent(id);
-    setOpenToast(true);
+  };
+
+  const handleSearchFilter = (name: string) => {
+    getStudentByName(name);
   };
 
   return (
     <Container>
-      <Header>
-        <h1>Aluno</h1>
-        <Dialog.Root>
-          <Dialog.Trigger asChild>
-            <NewStudentButton
-              onClick={() => handleShowStudent()}
-            >
-              Novo aluno
-            </NewStudentButton>
-          </Dialog.Trigger>
-
-          <StudentModal />
-        </Dialog.Root>
+      <Header
+        title="Aluno"
+        buttonTitle="Novo aluno"
+        onShowModal={handleShowStudent}
+      >
+        <StudentModal />
       </Header>
-      <SearchForm placeholder="Buscar por alunos" />
+      <SearchForm
+        onSearchAll={fetchStudents}
+        placeholder="Buscar por alunos"
+        onSearchFilter={handleSearchFilter}
+      />
 
       <Table>
         <thead>
@@ -85,31 +81,30 @@ export const Student = () => {
               <td>
                 <Dialog.Root>
                   <Dialog.Trigger asChild>
-                    <button>
+                    <Button variant="icon">
                       <PencilSimpleLine
                         size={16}
                         onClick={() => handleShowStudent(student.id)}
                       />
-                    </button>
+                    </Button>
                   </Dialog.Trigger>
 
                   <StudentModal />
                 </Dialog.Root>
               </td>
               <td>
-                <Toast.Provider duration={3000}>
-                  <button>
-                    <TrashSimple
-                      size={16}
-                      onClick={() => handleDeleteStudent(student.id)}
-                    />
-                  </button>
-
-                  <ToastRoot open={openToast} onOpenChange={setOpenToast}>
-                    <ToastTitle>Aluno deletado com sucesso!</ToastTitle>
-                  </ToastRoot>
-                  <ToastViewport />
-                </Toast.Provider>
+                <AlertDialogRadix.Root>
+                  <AlertDialogRadix.Trigger asChild>
+                    <Button variant="icon">
+                      <TrashSimple size={16} />
+                    </Button>
+                  </AlertDialogRadix.Trigger>
+                  <AlertDialog
+                    id={student.id}
+                    onClickAction={handleDeleteStudent}
+                    description="Essa ação não pode ser desfeita. Isso excluirá permanentemente o aluno."
+                  />
+                </AlertDialogRadix.Root>
               </td>
             </tr>
           ))}

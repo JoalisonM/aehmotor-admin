@@ -9,6 +9,7 @@ interface CollegesContextType {
   deleteCollege: (id: number) => void;
   setCollege: (value: CollegeProps) => void;
   getCollege: (id: number) => Promise<void>;
+  getCollegeByName: (name: string) => Promise<void>;
   createCollege: (data: CreateCollegeInput) => Promise<void>;
   updateCollege: (data: UpdateCollegeInput) => Promise<void>;
 }
@@ -39,15 +40,25 @@ export const CollegesContextProvider = ({ children }: CollegesContextProviderPro
     }, []
   );
 
+  const getCollegeByName = useCallback(
+    async (name: string) => {
+      const response = await College.getByName(name);
+
+      if (response) {
+        setColleges(response.data);
+      }
+    }, []
+  );
+
   const createCollege = useCallback(
     async (data: CreateCollegeInput) => {
-      const { nome, telefone, id_endereco } = data;
+      const { nome, telefone, endereco } = data;
 
       const response = await College.create(
         {
           nome,
           telefone,
-          id_endereco,
+          endereco,
         }
       );
 
@@ -57,14 +68,14 @@ export const CollegesContextProvider = ({ children }: CollegesContextProviderPro
 
   const updateCollege = useCallback(
     async (data: UpdateCollegeInput) => {
-      const { id, nome, telefone, id_endereco } = data;
+      const { id, nome, telefone, endereco } = data;
 
       const response = await College.update(
         {
           id,
           nome,
           telefone,
-          id_endereco
+          endereco
         }
       );
 
@@ -89,6 +100,7 @@ export const CollegesContextProvider = ({ children }: CollegesContextProviderPro
         createCollege,
         updateCollege,
         deleteCollege,
+        getCollegeByName,
       }}
     >
       {children}
@@ -105,6 +117,7 @@ export const useColleges = () => {
   const createCollege = useContextSelector(CollegesContext, (context) => context.createCollege);
   const updateCollege = useContextSelector(CollegesContext, (context) => context.updateCollege);
   const deleteCollege = useContextSelector(CollegesContext, (context) => context.deleteCollege);
+  const getCollegeByName = useContextSelector(CollegesContext, (context) => context.getCollegeByName);
 
   return {
     college,
@@ -115,5 +128,6 @@ export const useColleges = () => {
     createCollege,
     updateCollege,
     deleteCollege,
+    getCollegeByName,
   };
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import * as Toast from "@radix-ui/react-toast";
 import * as Dialog from "@radix-ui/react-dialog";
 import { TrashSimple, PencilSimpleLine } from "phosphor-react";
+import * as AlertDialogRadix from '@radix-ui/react-alert-dialog';
 
 import {
   Header,
@@ -16,6 +17,7 @@ import { PersonProps } from "../../api/person";
 import { usePeople } from "../../hooks/usePeople";
 import { Table } from "../../styles/components/table";
 import { SearchForm } from "../../components/SearchForm";
+import { AlertDialog } from "../../components/AlertDialog";
 
 export const Person = () => {
   const [openToast, setOpenToast] = useState(false);
@@ -94,16 +96,16 @@ export const Person = () => {
                 </Dialog.Root>
               </td>
               <td>
-                <Toast.Provider duration={3000}>
-                  <button onClick={() => handleDeletePerson(person.id)}>
-                    <TrashSimple size={16} />
-                  </button>
-
-                  <ToastRoot open={openToast} onOpenChange={setOpenToast}>
-                    <ToastTitle>Pessoa deletada com sucesso!</ToastTitle>
-                  </ToastRoot>
-                  <ToastViewport />
-                </Toast.Provider>
+                <AlertDialogRadix.Root>
+                  <AlertDialogRadix.Trigger asChild>
+                    <button><TrashSimple size={16} /></button>
+                  </AlertDialogRadix.Trigger>
+                  <AlertDialog
+                    id={person.id}
+                    onClickAction={handleDeletePerson}
+                    description="Essa ação não pode ser desfeita. Isso excluirá permanentemente o motorista."
+                  />
+                </AlertDialogRadix.Root>
               </td>
             </tr>
           ))}

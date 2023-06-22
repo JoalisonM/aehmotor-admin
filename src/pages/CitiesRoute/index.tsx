@@ -1,30 +1,27 @@
-import { useEffect, useState } from "react";
-import * as Toast from "@radix-ui/react-toast";
+import { useEffect } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { TrashSimple, PencilSimpleLine } from "phosphor-react";
+import * as AlertDialogRadix from '@radix-ui/react-alert-dialog';
+import { TrashSimple, PencilSimpleLine, MapTrifold } from "phosphor-react";
 
-import {
-  Header,
-  Container,
-  ToastRoot,
-  ToastTitle,
-  ToastViewport,
-  NewDriverButton,
-} from "./styles";
+import { Container } from "./styles";
+import { Map } from "../../components/Map";
 import { RouteProps } from "../../api/route";
 import {CitiesRouteModal } from "./CitiesRouteModal";
 import { Table } from "../../styles/components/table";
 import { SearchForm } from "../../components/SearchForm";
+import { AlertDialog } from "../../components/AlertDialog";
 import { useCitiesRoutes } from "../../hooks/useCitiesRoutes";
+import { Button } from "../../styles/components/button";
+import { Header } from "../../components/Header";
 
 export const CitiesRoute = () => {
-  const [openToast, setOpenToast] = useState(false);
   const {
     citiesRoutes,
     getCitiesRoute,
     setCitiesRoute,
     fetchCitiesRoutes,
     deleteCitiesRoute,
+    getCitiesRouteByDestinationCity,
   } = useCitiesRoutes();
 
   useEffect(() => {
@@ -41,33 +38,30 @@ export const CitiesRoute = () => {
 
   const handleDeleteCitiesRoute = (id: number) => {
     deleteCitiesRoute(id);
-    setOpenToast(true);
+  };
+
+  const handleSearchFilter = (destinationCity: string) => {
+    getCitiesRouteByDestinationCity(destinationCity);
   };
 
   return (
     <Container>
-      <Header>
-        <h1>Rota</h1>
-        <Dialog.Root>
-          <Dialog.Trigger asChild>
-            <NewDriverButton
-              onClick={() => handleShowCitiesRoute()}
-            >
-              Nova rota
-            </NewDriverButton>
-          </Dialog.Trigger>
-
-          <CitiesRouteModal />
-        </Dialog.Root>
+      <Header
+        title="Rota"
+        buttonTitle="Nova rota"
+        onShowModal={handleShowCitiesRoute}
+      >
+        <CitiesRouteModal />
       </Header>
-      <SearchForm placeholder="Buscar por motoristas" />
-
+      <SearchForm
+        onSearchAll={fetchCitiesRoutes}
+        placeholder="Buscar por motoristas"
+        onSearchFilter={handleSearchFilter}
+      />
       <Table>
         <thead>
           <tr>
             <th>Id</th>
-            <th>IdVeículo</th>
-            <th>IdMotorista</th>
             <th>IdFaculdade</th>
             <th>IdPrefeitura</th>
             <th>CidadeOrigem</th>
@@ -80,9 +74,6 @@ export const CitiesRoute = () => {
           {citiesRoutes && citiesRoutes.map((citiesRoute) => (
             <tr key={citiesRoute.id}>
               <td>{citiesRoute.id}</td>
-              <td>{citiesRoute.id_veiculo}</td>
-              <td>{citiesRoute.id_motorista}</td>
-              <td>{citiesRoute.id_instituicao_ensino}</td>
               <td>{citiesRoute.id_prefeitura}</td>
               <td>{citiesRoute.cidade_origem}</td>
               <td>{citiesRoute.cidade_destino}</td>
@@ -91,25 +82,45 @@ export const CitiesRoute = () => {
               <td>
                 <Dialog.Root>
                   <Dialog.Trigger asChild>
-                    <button onClick={() => handleShowCitiesRoute(citiesRoute.id)}>
+                    <Button variant="icon">
+                      <MapTrifold size={16} />
+                    </Button>
+                  </Dialog.Trigger>
+
+                  <Map
+                    originCity={citiesRoute.cidade_origem}
+                    destinationCity={citiesRoute.cidade_destino}
+                  />
+                </Dialog.Root>
+              </td>
+              <td>
+                <Dialog.Root>
+                  <Dialog.Trigger asChild>
+                    <Button
+                      variant="icon"
+                      onClick={() => handleShowCitiesRoute(citiesRoute.id)}
+                    >
                       <PencilSimpleLine size={16} />
-                    </button>
+                    </Button>
                   </Dialog.Trigger>
 
                   <CitiesRouteModal />
                 </Dialog.Root>
               </td>
               <td>
-                <Toast.Provider duration={3000}>
-                  <button onClick={() => handleDeleteCitiesRoute(citiesRoute.id)}>
-                    <TrashSimple size={16} />
-                  </button>
-
-                  <ToastRoot open={openToast} onOpenChange={setOpenToast}>
-                    <ToastTitle>Rota deletada com sucesso!</ToastTitle>
-                  </ToastRoot>
-                  <ToastViewport />
-                </Toast.Provider>
+                <AlertDialogRadix.Root>
+                  <AlertDialogRadix.Trigger asChild>
+                    <Button variant="icon">
+                      <TrashSimple size={16} />
+                    </Button>
+                  </AlertDialogRadix.Trigger>
+                  <AlertDialog
+                    id={citiesRoute.id}
+                    onClickAction={handleDeleteCitiesRoute}
+                    description="Essa ação não pode ser desfeita.
+                    Isso excluirá permanentemente a sua rota."
+                  />
+                </AlertDialogRadix.Root>
               </td>
             </tr>
           ))}

@@ -49,6 +49,10 @@ export const Route = {
     return api.get(`${uriRoute}/${id}`);
   },
 
+  getByDestinationCity(name: string) {
+    return api.get<RouteProps[]>(`${uriRoute}/${name}`);
+  },
+
   create(route: CreateRouteInput) {
     return api.post(`${uriRoute}`, route);
   },

@@ -2,8 +2,9 @@ import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 import { NewAddressFormInputs } from ".";
 import { Fieldset, MessageError } from "./styles";
-import { PersonProps } from "../../../api/person";
 import { Select, Option } from "../../../styles/components/select";
+import { PersonProps } from "../../../api/person";
+import { Label } from "../../../styles/components/label";
 
 const cities = [
   {
@@ -13,6 +14,10 @@ const cities = [
   {
     nome: "Guarabira",
     codigoIbge: 2506301,
+  },
+  {
+    nome: "Mari",
+    codigoIbge: 2509107,
   },
 ];
 
@@ -26,50 +31,62 @@ export const AddressFields = ({ register, errors, people }: AddressFieldsProps) 
   return (
     <>
       <Fieldset>
+        <Label htmlFor="cep">Cep:</Label>
         <input
+          id="cep"
           type="text"
           placeholder="Cep"
-          {...register("cep")}
+          {...register("endereco.cep")}
         />
-        {errors.cep && <MessageError>{errors.cep.message}</MessageError>}
+        {errors.endereco?.cep && <MessageError>{errors.endereco.cep.message}</MessageError>}
       </Fieldset>
       <Fieldset>
+        <Label htmlFor="logradouro">Logradouro:</Label>
         <input
+          id="logradouro"
           type="text"
           placeholder="Logradouro"
-          {...register("logradouro")}
+          {...register("endereco.logradouro")}
         />
-        {errors.logradouro && <MessageError>{errors.logradouro.message}</MessageError>}
+        {errors.endereco?.logradouro && <MessageError>{errors.endereco.logradouro.message}</MessageError>}
       </Fieldset>
       <Fieldset>
+        <Label htmlFor="numero">Número:</Label>
         <input
+          id="numero"
           type="text"
           placeholder="Número"
-          {...register("numero")}
+          {...register("endereco.numero", { valueAsNumber: true })}
         />
-        {errors.numero && <MessageError>{errors.numero.message}</MessageError>}
+        {errors.endereco?.numero && <MessageError>{errors.endereco.numero.message}</MessageError>}
       </Fieldset>
       <Fieldset>
+        <Label htmlFor="referencia">Referência:</Label>
         <input
+          id="referencia"
           type="text"
           placeholder="Referência"
-          {...register("referencia")}
+          {...register("endereco.referencia")}
         />
-        {errors.referencia && <MessageError>{errors.referencia.message}</MessageError>}
+        {errors.endereco?.referencia && <MessageError>{errors.endereco.referencia.message}</MessageError>}
       </Fieldset>
       <Fieldset>
+        <Label htmlFor="complemento">Complemento:</Label>
         <input
+          id="complemento"
           type="text"
           placeholder="Complemento"
-          {...register("complemento")}
+          {...register("endereco.complemento")}
         />
-        {errors.complemento && <MessageError>{errors.complemento.message}</MessageError>}
+        {errors.endereco?.complemento && <MessageError>{errors.endereco.complemento.message}</MessageError>}
       </Fieldset>
 
       <Fieldset>
+        <Label htmlFor="usuario">Usuário:</Label>
         <Select
-          placeholder="Pessoa"
-          {...register("id_pessoa")}
+          id="usuario"
+          placeholder="Usuário"
+          {...register("endereco.id_pessoa", { valueAsNumber: true })}
         >
           {people && people.map((person) => (
             <Option
@@ -80,12 +97,14 @@ export const AddressFields = ({ register, errors, people }: AddressFieldsProps) 
             </Option>
           ))}
         </Select>
-        {errors.id_pessoa && <MessageError>{errors.id_pessoa.message}</MessageError>}
+        {errors.endereco?.id_pessoa && <MessageError>{errors.endereco.id_pessoa.message}</MessageError>}
       </Fieldset>
       <Fieldset>
+        <Label htmlFor="cidade">Cidade:</Label>
         <Select
+          id="cidade"
           placeholder="Cidade"
-          {...register("id_cidade")}
+          {...register("endereco.id_cidade", { valueAsNumber: true })}
         >
           {cities.map((city) => (
             <Option
@@ -96,7 +115,7 @@ export const AddressFields = ({ register, errors, people }: AddressFieldsProps) 
             </Option>
           ))}
         </Select>
-        {errors.id_cidade && <MessageError>{errors.id_cidade.message}</MessageError>}
+        {errors.endereco?.id_cidade && <MessageError>{errors.endereco.id_cidade.message}</MessageError>}
       </Fieldset>
     </>
   );

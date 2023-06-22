@@ -17,17 +17,33 @@ import { useAddresses } from "../../../hooks/useAddresses";
 import { useColleges } from "../../../hooks/useColleges";
 import { AddressProps } from "../../../api/address";
 import { AddressFields } from "./Address";
+import { Label } from "../../../styles/components/label";
 
 const newCollegeFormSchema = z.object({
-  nome: z.string().nonempty("O nome é obrigatório"),
-  telefone: z.string().nonempty("O telefone é obrigatório"),
-  id_cidade: z.string().nonempty("A cidade é obrigatória"),
-  id_pessoa: z.string().nonempty("O usuário é obrigatório"),
-  cep: z.string().nonempty("O cep é obrigatório"),
-  logradouro: z.string().nonempty("O logradouro é obrigatório"),
-  numero: z.string().nonempty("O número é obrigatório"),
-  complemento: z.string().nonempty("O complemento é obrigatório"),
-  referencia: z.string().nonempty("O referência é obrigatória"),
+  nome: z.string().nonempty("O nome é obrigatório")
+    .trim()
+    .min(1, { message: "Deve ter mais de 1 caractere"}),
+  telefone: z.string().nonempty("O telefone é obrigatório")
+    .trim()
+    .min(1, { message: "Deve ter mais de 1 caractere"}),
+  endereco: z.object({
+    id_cidade: z.number(),
+    id_pessoa: z.number(),
+    cep: z.string().nonempty("O cep é obrigatório")
+      .trim()
+      .min(1, { message: "Deve ter mais de 1 caractere"}),
+    logradouro: z.string().nonempty("O logradouro é obrigatório")
+      .trim()
+      .min(1, { message: "Deve ter mais de 1 caractere"}),
+    numero: z.number().nonnegative("Número tem que ser maior que 0")
+      .min(1, { message: "Deve ter mais de 1 caractere"}),
+    complemento: z.string().nonempty("O complemento é obrigatório")
+      .trim()
+      .min(1, { message: "Deve ter mais de 1 caractere"}),
+    referencia: z.string().nonempty("O referência é obrigatória")
+      .trim()
+      .min(1, { message: "Deve ter mais de 1 caractere"}),
+  })
 });
 
 export type NewAddressFormInputs = z.infer<typeof newCollegeFormSchema>
@@ -51,60 +67,21 @@ export const CollegeModal = () => {
   }, [fetchPeople]);
 
   useEffect(() => {
-    if (college && college.id_endereco) {
-      getAddress(college.id_endereco);
-    }
-  }, [college]);
-
-  useEffect(() => {
     if (college.id) {
       setValue("nome", college.nome);
       setValue("telefone", college.telefone);
-      setValue("id_cidade", String(address.id_cidade));
-      setValue("id_pessoa", String(address.id_pessoa));
-      setValue("cep", address.cep);
-      setValue("numero", String(address.numero));
-      setValue("complemento", address.complemento);
-      setValue("referencia", address.referencia);
-      setValue("logradouro", address.logradouro);
+      setValue("endereco", college.endereco);
     }
-  }, [address]);
+  }, [college]);
 
   const handleCreateNewAddress = async (data: NewAddressFormInputs) => {
-    const { nome, telefone, id_cidade, id_pessoa,
-      cep, numero, complemento, referencia, logradouro } = data;
-
-    let responseAddress: AddressProps;
-
-
-    if (!address.id) {
-      responseAddress = await createAddress({
-        id_cidade: Number(id_cidade),
-        id_pessoa: Number(id_pessoa),
-        cep,
-        numero,
-        complemento,
-        referencia,
-        logradouro,
-      });
-    } else {
-      updateAddress({
-        id: address.id,
-        id_cidade: Number(id_cidade),
-        id_pessoa: Number(id_pessoa),
-        cep,
-        numero,
-        complemento,
-        referencia,
-        logradouro,
-      });
-    }
+    const { nome, telefone, endereco } = data;
 
     if (!college.id) {
       createCollege({
         nome,
         telefone,
-        id_endereco: responseAddress.id,
+        endereco,
       });
 
       reset();
@@ -113,7 +90,7 @@ export const CollegeModal = () => {
         id: college.id,
         nome,
         telefone,
-        id_endereco: address.id,
+        endereco,
       });
     }
   }
@@ -130,7 +107,9 @@ export const CollegeModal = () => {
 
           <form onSubmit={handleSubmit(handleCreateNewAddress)}>
             <Fieldset>
+              <Label htmlFor="nome">Nome:</Label>
               <input
+                id="nome"
                 type="text"
                 placeholder="Nome"
                 {...register("nome")}
@@ -138,7 +117,9 @@ export const CollegeModal = () => {
               {errors.nome && <MessageError>{errors.nome.message}</MessageError>}
             </Fieldset>
             <Fieldset>
+              <Label htmlFor="telefone">Telefone:</Label>
               <input
+                id="telefone"
                 type="text"
                 placeholder="Telefone"
                 {...register("telefone")}

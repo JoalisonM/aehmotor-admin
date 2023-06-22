@@ -4,20 +4,21 @@ import { styled } from "../../../styles";
 
 export const Overlay = styled(Dialog.Overlay,{
   position: "fixed",
-  width: "100%",
-  height: "100%",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+  display: 'grid',
+  placeItems: 'center',
+  padding: '3rem',
+  overflowY: 'auto',
   inset: "0", // top: 0, bottom: 0, right: 0, left: 0
   background: "rgba(0, 0, 0, 0.75)",
 });
 
 export const Content = styled(Dialog.Content, {
   minWidth: "32rem",
+  maxHeight: "38rem",
   borderRadius: "6px",
   padding: "2.5rem 3rem",
   background: "$gray800",
+  overflowY: 'auto',
 
   position: "fixed",
   top: "50%",

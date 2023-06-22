@@ -15,7 +15,7 @@ import {
 import { usePeople } from "../../../hooks/usePeople";
 import { useAddresses } from "../../../hooks/useAddresses";
 import { Select, Option } from "../../../styles/components/select";
-// import { useCities } from "../../../hooks/useCities";
+import { Label } from "../../../styles/components/label";
 
 const cities = [
   {
@@ -31,11 +31,26 @@ const cities = [
 const newAddressFormSchema = z.object({
   id_cidade: z.string().nonempty("A cidade é obrigatória"),
   id_pessoa: z.string().nonempty("O usuário é obrigatório"),
-  cep: z.string().nonempty("O cep é obrigatório"),
-  logradouro: z.string().nonempty("O logradouro é obrigatório"),
-  numero: z.string().nonempty("O número é obrigatório"),
-  complemento: z.string().nonempty("O complemento é obrigatório"),
-  referencia: z.string().nonempty("O referência é obrigatória"),
+  cep: z.string()
+    .nonempty("O cep é obrigatório")
+    .trim()
+    .min(1, { message: "Deve ter mais de 1 caractere"}),
+  logradouro: z.string()
+    .nonempty("O logradouro é obrigatório")
+    .trim()
+    .min(1, { message: "Deve ter mais de 1 caractere"}),
+  numero: z.string()
+    .nonempty("O número é obrigatório")
+    .trim()
+    .min(1, { message: "Deve ter mais de 1 caractere"}),
+  complemento: z.string()
+    .nonempty("O complemento é obrigatório")
+    .trim()
+    .min(1, { message: "Deve ter mais de 1 caractere"}),
+  referencia: z.string()
+    .nonempty("O referência é obrigatória")
+    .trim()
+    .min(1, { message: "Deve ter mais de 1 caractere"}),
 });
 
 type NewAddressFormInputs = z.infer<typeof newAddressFormSchema>
@@ -51,7 +66,6 @@ export const AddressModal = () => {
     resolver: zodResolver(newAddressFormSchema),
   });
   const { people, fetchPeople } = usePeople();
-  // const { cities, fetchCities } = useCities();
   const { address, createAddress, updateAddress } = useAddresses();
 
   useEffect(() => {
@@ -113,7 +127,9 @@ export const AddressModal = () => {
 
           <form onSubmit={handleSubmit(handleCreateNewAddress)}>
             <Fieldset>
+              <Label htmlFor="cep">Cep:</Label>
               <input
+                id="cep"
                 type="text"
                 placeholder="Cep"
                 {...register("cep")}
@@ -121,7 +137,9 @@ export const AddressModal = () => {
               {errors.cep && <MessageError>{errors.cep.message}</MessageError>}
             </Fieldset>
             <Fieldset>
+              <Label htmlFor="logradouro">Logradouro:</Label>
               <input
+                id="logradouro"
                 type="text"
                 placeholder="Logradouro"
                 {...register("logradouro")}
@@ -129,7 +147,9 @@ export const AddressModal = () => {
               {errors.logradouro && <MessageError>{errors.logradouro.message}</MessageError>}
             </Fieldset>
             <Fieldset>
+              <Label htmlFor="numero">Número:</Label>
               <input
+                id="numero"
                 type="text"
                 placeholder="Número"
                 {...register("numero")}
@@ -137,7 +157,9 @@ export const AddressModal = () => {
               {errors.numero && <MessageError>{errors.numero.message}</MessageError>}
             </Fieldset>
             <Fieldset>
+              <Label htmlFor="referencia">Referência:</Label>
               <input
+                id="referencia"
                 type="text"
                 placeholder="Referência"
                 {...register("referencia")}
@@ -145,7 +167,9 @@ export const AddressModal = () => {
               {errors.referencia && <MessageError>{errors.referencia.message}</MessageError>}
             </Fieldset>
             <Fieldset>
+              <Label htmlFor="complemento">Complemento:</Label>
               <input
+                id="complemento"
                 type="text"
                 placeholder="Complemento"
                 {...register("complemento")}
@@ -154,8 +178,10 @@ export const AddressModal = () => {
             </Fieldset>
 
             <Fieldset>
+              <Label htmlFor="usuario">Usuário:</Label>
               <Select
-                placeholder="Cidade"
+                id="usuario"
+                placeholder="Usuário"
                 {...register("id_pessoa")}
               >
                 {people && people.map((person) => (
@@ -170,7 +196,9 @@ export const AddressModal = () => {
               {errors.id_pessoa && <MessageError>{errors.id_pessoa.message}</MessageError>}
             </Fieldset>
             <Fieldset>
+              <Label htmlFor="cidade">Cidade:</Label>
               <Select
+                id="cidade"
                 placeholder="Cidade"
                 {...register("id_cidade")}
               >

@@ -1,30 +1,26 @@
-import { useEffect, useState } from "react";
-import * as Toast from "@radix-ui/react-toast";
+import { useEffect } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { TrashSimple, PencilSimpleLine } from "phosphor-react";
+import * as AlertDialogRadix from '@radix-ui/react-alert-dialog';
 
-import {
-  Header,
-  Container,
-  ToastRoot,
-  ToastTitle,
-  ToastViewport,
-  NewStudentButton,
-} from "./styles";
+import { Container } from "./styles";
 import { AddressModal } from "./AddressModal";
 import { AddressProps } from "../../api/address";
 import { Table } from "../../styles/components/table";
 import { useAddresses } from "../../hooks/useAddresses";
+import { Button } from "../../styles/components/button";
 import { SearchForm } from "../../components/SearchForm";
+import { AlertDialog } from "../../components/AlertDialog";
+import { Header } from "../../components/Header";
 
 export const Address = () => {
-  const [openToast, setOpenToast] = useState(false);
   const {
     addresses,
     getAddress,
     setAddress,
     deleteAddress,
     fetchAddresses,
+    getAddressByStreet,
   } = useAddresses();
 
   useEffect(() => {
@@ -41,26 +37,26 @@ export const Address = () => {
 
   const handleDeleteAddress = (id: number) => {
     deleteAddress(id);
-    setOpenToast(true);
+  };
+
+  const handleSearchFilter = (street: string) => {
+    getAddressByStreet(street);
   };
 
   return (
     <Container>
-      <Header>
-        <h1>Endereço</h1>
-        <Dialog.Root>
-          <Dialog.Trigger asChild>
-            <NewStudentButton
-              onClick={() => handleShowAddress()}
-            >
-              Novo endereço
-            </NewStudentButton>
-          </Dialog.Trigger>
-
-          <AddressModal />
-        </Dialog.Root>
+      <Header
+        title="Endereço"
+        buttonTitle="Novo endereço"
+        onShowModal={handleShowAddress}
+      >
+        <AddressModal />
       </Header>
-      <SearchForm placeholder="Buscar por endereços" />
+      <SearchForm
+        onSearchAll={fetchAddresses}
+        placeholder="Buscar por endereços"
+        onSearchFilter={handleSearchFilter}
+      />
 
       <Table>
         <thead>
@@ -69,7 +65,7 @@ export const Address = () => {
             <th>IdPessoa</th>
             <th>IdCidade</th>
             <th>Cep</th>
-            <th>Numero</th>
+            <th>Número</th>
             <th>Logradouro</th>
           </tr>
         </thead>
@@ -85,31 +81,30 @@ export const Address = () => {
               <td>
                 <Dialog.Root>
                   <Dialog.Trigger asChild>
-                    <button>
+                    <Button variant="icon">
                       <PencilSimpleLine
                         size={16}
                         onClick={() => handleShowAddress(address.id)}
                       />
-                    </button>
+                    </Button>
                   </Dialog.Trigger>
 
                   <AddressModal />
                 </Dialog.Root>
               </td>
               <td>
-                <Toast.Provider duration={3000}>
-                  <button>
-                    <TrashSimple
-                      size={16}
-                      onClick={() => handleDeleteAddress(address.id)}
-                    />
-                  </button>
-
-                  <ToastRoot open={openToast} onOpenChange={setOpenToast}>
-                    <ToastTitle>Endereço deletado com sucesso!</ToastTitle>
-                  </ToastRoot>
-                  <ToastViewport />
-                </Toast.Provider>
+                <AlertDialogRadix.Root>
+                  <AlertDialogRadix.Trigger asChild>
+                    <Button variant="icon" hover="danger">
+                      <TrashSimple size={16} />
+                    </Button>
+                  </AlertDialogRadix.Trigger>
+                  <AlertDialog
+                    id={address.id}
+                    onClickAction={handleDeleteAddress}
+                    description="Essa ação não pode ser desfeita. Isso excluirá permanentemente o seu endereço."
+                  />
+                </AlertDialogRadix.Root>
               </td>
             </tr>
           ))}

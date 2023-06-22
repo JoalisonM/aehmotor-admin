@@ -9,6 +9,7 @@ interface StudentContextType {
     deleteStudent: (id: number) => void;
     setStudent: (value: StudentProps) => void;
     getStudent: (id: number) => Promise<void>;
+    getStudentByName: (name: string) => Promise<void>;
     createStudent: (data: CreateStudentInput) => Promise<void>;
     updateStudent: (data: UpdateStudentInput) => Promise<void>;
 }
@@ -36,6 +37,16 @@ export const StudentsContextProvider = ({ children }: StudentsContextProviderPro
             if (response) {
                 setStudent(response.data);
             }
+        }, []
+    );
+
+    const getStudentByName = useCallback(
+        async (name: string) => {
+        const response = await Student.getByName(name);
+
+        if (response) {
+            setStudents(response.data);
+        }
         }, []
     );
 
@@ -105,6 +116,7 @@ export const StudentsContextProvider = ({ children }: StudentsContextProviderPro
                 createStudent,
                 updateStudent,
                 deleteStudent,
+                getStudentByName,
             }}
         >
             {children}
@@ -121,6 +133,7 @@ export const useStudents = () => {
     const createStudent = useContextSelector(StudentsContext, (context) => context.createStudent);
     const updateStudent = useContextSelector(StudentsContext, (context) => context.updateStudent);
     const deleteStudent = useContextSelector(StudentsContext, (context) => context.deleteStudent);
+    const getStudentByName = useContextSelector(StudentsContext, (context) => context.getStudentByName);
 
     return {
         student,
@@ -131,5 +144,6 @@ export const useStudents = () => {
         createStudent,
         updateStudent,
         deleteStudent,
+        getStudentByName,
     };
 }

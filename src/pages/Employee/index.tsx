@@ -1,30 +1,26 @@
-import { useEffect, useState } from "react";
-import * as Toast from "@radix-ui/react-toast";
+import { useEffect } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { TrashSimple, PencilSimpleLine } from "phosphor-react";
+import * as AlertDialogRadix from '@radix-ui/react-alert-dialog';
 
-import {
-  Header,
-  Container,
-  ToastRoot,
-  ToastTitle,
-  ToastViewport,
-  NewEmployeeButton,
-} from "./styles";
+import { Container } from "./styles";
 import { EmployeeModal } from "./EmployeeModal";
 import { EmployeeProps } from "../../api/employee";
 import { Table } from "../../styles/components/table";
 import { useEmployees } from "../../hooks/useEmployees";
 import { SearchForm } from "../../components/SearchForm";
+import { AlertDialog } from "../../components/AlertDialog";
+import { Button } from "../../styles/components/button";
+import { Header } from "../../components/Header";
 
 export const Employee = () => {
-  const [openToast, setOpenToast] = useState(false);
   const {
     employees,
     getEmployee,
     setEmployee,
     fetchEmployees,
     deleteEmployee,
+    getEmployeeByName,
   } = useEmployees();
 
   useEffect(() => {
@@ -41,26 +37,26 @@ export const Employee = () => {
 
   const handleDeleteEmployee = (id: number) => {
     deleteEmployee(id);
-    setOpenToast(true);
+  };
+
+  const handleSearchFilter = (name: string) => {
+    getEmployeeByName(name);
   };
 
   return (
     <Container>
-      <Header>
-        <h1>Funcionário</h1>
-        <Dialog.Root>
-          <Dialog.Trigger asChild>
-            <NewEmployeeButton
-              onClick={() => handleShowEmployee()}
-            >
-              Novo funcionário
-            </NewEmployeeButton>
-          </Dialog.Trigger>
-
-          <EmployeeModal />
-        </Dialog.Root>
+      <Header
+        title="Funcionário"
+        buttonTitle="Novo funcionário"
+        onShowModal={handleShowEmployee}
+      >
+        <EmployeeModal />
       </Header>
-      <SearchForm placeholder="Buscar por funcionários" />
+      <SearchForm
+        onSearchAll={fetchEmployees}
+        placeholder="Buscar por funcionários"
+        onSearchFilter={handleSearchFilter}
+      />
 
       <Table>
         <thead>
@@ -85,25 +81,30 @@ export const Employee = () => {
               <td>
                 <Dialog.Root>
                   <Dialog.Trigger asChild>
-                    <button onClick={() => handleShowEmployee(employee.id)}>
+                    <Button
+                      variant="icon"
+                      onClick={() => handleShowEmployee(employee.id)}
+                    >
                       <PencilSimpleLine size={16} />
-                    </button>
+                    </Button>
                   </Dialog.Trigger>
 
                   <EmployeeModal />
                 </Dialog.Root>
               </td>
               <td>
-                <Toast.Provider duration={3000}>
-                  <button onClick={() => handleDeleteEmployee(employee.id)}>
-                    <TrashSimple size={16} />
-                  </button>
-
-                  <ToastRoot open={openToast} onOpenChange={setOpenToast}>
-                    <ToastTitle>Funcionário deletada com sucesso!</ToastTitle>
-                  </ToastRoot>
-                  <ToastViewport />
-                </Toast.Provider>
+                <AlertDialogRadix.Root>
+                  <AlertDialogRadix.Trigger asChild>
+                    <Button variant="icon">
+                      <TrashSimple size={16} />
+                    </Button>
+                  </AlertDialogRadix.Trigger>
+                  <AlertDialog
+                    id={employee.id}
+                    onClickAction={handleDeleteEmployee}
+                    description="Essa ação não pode ser desfeita. Isso excluirá permanentemente o funcionário."
+                  />
+                </AlertDialogRadix.Root>
               </td>
             </tr>
           ))}

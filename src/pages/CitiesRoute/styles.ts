@@ -2,11 +2,8 @@ import * as Toast from "@radix-ui/react-toast";
 
 import { styled, keyframes } from "../../styles";
 
-export const Container = styled("section", {
-  maxWidth: "64rem",
-  minWidth: "60rem",
-  margin: "4rem auto 0",
-  padding: "0 3rem",
+export const Container = styled("main", {
+  padding: "2rem 3rem",
 
   display: "flex",
   flexDirection: "column",
@@ -15,24 +12,6 @@ export const Container = styled("section", {
   h1: {
     fontSize: "$xxl",
   },
-});
-
-export const Header = styled("div", {
-  width: "100%",
-
-  display: "flex",
-  justifyContent: "space-between",
-});
-
-export const NewDriverButton = styled("button", {
-  height: "40px",
-  border: "0",
-  background: "$blue500",
-  color: "$gray100",
-  fontWeight: "700",
-  padding: "0 1.25rem",
-  borderRadius: "6px",
-  cursor: "pointer",
 });
 
 const VIEWPORT_PADDING = 25;

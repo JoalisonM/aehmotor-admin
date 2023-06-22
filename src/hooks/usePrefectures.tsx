@@ -7,8 +7,9 @@ interface PrefecturesContextType {
   prefectures: CityHallProps[];
   fetchPrefectures: () => Promise<void>;
   deleteCityHall: (id: number) => void;
-  setCityHall: (value: CityHallProps) => void;
   getCityHall: (id: number) => Promise<void>;
+  setCityHall: (value: CityHallProps) => void;
+  getCityHallByName: (name: string) => Promise<void>;
   createCityHall: (data: CreateCityHallInput) => Promise<void>;
   updateCityHall: (data: UpdateCityHallInput) => Promise<void>;
 }
@@ -39,14 +40,25 @@ export const PrefecturesContextProvider = ({ children }: PrefecturesContextProvi
     }, []
   );
 
+  const getCityHallByName = useCallback(
+    async (name: string) => {
+      const response = await CityHall.getByName(name);
+
+      if (response) {
+        setPrefectures(response.data);
+      }
+    }, []
+  );
+
   const createCityHall = useCallback(
     async (data: CreateCityHallInput) => {
-      const { secretario, id_endereco } = data;
+      const { nome, secretario, endereco } = data;
 
       const response = await CityHall.create(
         {
+          nome,
           secretario,
-          id_endereco,
+          endereco,
         }
       );
 
@@ -56,13 +68,14 @@ export const PrefecturesContextProvider = ({ children }: PrefecturesContextProvi
 
   const updateCityHall = useCallback(
     async (data: UpdateCityHallInput) => {
-      const { id, secretario, id_endereco } = data;
+      const { id, nome, secretario, endereco } = data;
 
       const response = await CityHall.update(
         {
           id,
+          nome,
           secretario,
-          id_endereco
+          endereco
         }
       );
 
@@ -83,10 +96,11 @@ export const PrefecturesContextProvider = ({ children }: PrefecturesContextProvi
         prefectures,
         getCityHall,
         setCityHall,
-        fetchPrefectures,
         createCityHall,
         updateCityHall,
         deleteCityHall,
+        fetchPrefectures,
+        getCityHallByName,
       }}
     >
       {children}
@@ -103,15 +117,17 @@ export const usePrefectures = () => {
   const createCityHall = useContextSelector(PrefecturesContext, (context) => context.createCityHall);
   const updateCityHall = useContextSelector(PrefecturesContext, (context) => context.updateCityHall);
   const deleteCityHall = useContextSelector(PrefecturesContext, (context) => context.deleteCityHall);
+  const getCityHallByName = useContextSelector(PrefecturesContext, (context) => context.getCityHallByName);
 
   return {
     cityHall,
     prefectures,
     setCityHall,
     getCityHall,
-    fetchPrefectures,
     createCityHall,
     updateCityHall,
     deleteCityHall,
+    fetchPrefectures,
+    getCityHallByName,
   };
 }

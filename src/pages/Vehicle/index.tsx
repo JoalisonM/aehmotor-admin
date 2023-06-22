@@ -1,30 +1,26 @@
-import { useEffect, useState } from "react";
-import * as Toast from "@radix-ui/react-toast";
+import { useEffect } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { TrashSimple, PencilSimpleLine } from "phosphor-react";
+import * as AlertDialogRadix from '@radix-ui/react-alert-dialog';
 
-import {
-  Header,
-  Container,
-  ToastRoot,
-  ToastTitle,
-  ToastViewport,
-  NewVehicleButton,
-} from "./styles";
+import { Container } from "./styles";
 import { VehicleModal } from "./VehicleModal";
 import { VehicleProps } from "../../api/vehicle";
+import { Button } from "../../styles/components";
+import { Header } from "../../components/Header";
 import { useVehicles } from "../../hooks/useVehicles";
 import { Table } from "../../styles/components/table";
 import { SearchForm } from "../../components/SearchForm";
+import { AlertDialog } from "../../components/AlertDialog";
 
 export const Vehicle = () => {
-  const [openToast, setOpenToast] = useState(false);
   const {
     vehicles,
     setVehicle,
     getVehicle,
     fetchVehicles,
     deleteVehicle,
+    getVehicleByName,
   } = useVehicles();
 
   useEffect(() => {
@@ -41,26 +37,26 @@ export const Vehicle = () => {
 
   const handleDeleteVehicle = (id: number) => {
     deleteVehicle(id);
-    setOpenToast(true);
+  };
+
+  const handleSearchFilter = (licensePlate: string) => {
+    getVehicleByName(licensePlate);
   };
 
   return (
     <Container>
-      <Header>
-        <h1>Veículo</h1>
-        <Dialog.Root>
-          <Dialog.Trigger asChild>
-            <NewVehicleButton
-              onClick={() => handleShowVehicle()}
-            >
-              Novo veículo
-            </NewVehicleButton>
-          </Dialog.Trigger>
-
-          <VehicleModal />
-        </Dialog.Root>
+      <Header
+        title="Veículo"
+        buttonTitle="Novo veículo"
+        onShowModal={handleShowVehicle}
+      >
+        <VehicleModal />
       </Header>
-      <SearchForm placeholder="Buscar por endereços" />
+      <SearchForm
+        onSearchAll={fetchVehicles}
+        placeholder="Buscar por endereços"
+        onSearchFilter={handleSearchFilter}
+      />
 
       <Table>
         <thead>
@@ -81,31 +77,31 @@ export const Vehicle = () => {
               <td>
                 <Dialog.Root>
                   <Dialog.Trigger asChild>
-                    <button>
+                    <Button variant="icon">
                       <PencilSimpleLine
                         size={16}
                         onClick={() => handleShowVehicle(vehicle.id)}
                       />
-                    </button>
+                    </Button>
                   </Dialog.Trigger>
 
                   <VehicleModal />
                 </Dialog.Root>
               </td>
               <td>
-                <Toast.Provider duration={3000}>
-                  <button>
-                    <TrashSimple
-                      size={16}
-                      onClick={() => handleDeleteVehicle(vehicle.id)}
-                    />
-                  </button>
-
-                  <ToastRoot open={openToast} onOpenChange={setOpenToast}>
-                    <ToastTitle>Veículo deletada com sucesso!</ToastTitle>
-                  </ToastRoot>
-                  <ToastViewport />
-                </Toast.Provider>
+                <AlertDialogRadix.Root>
+                  <AlertDialogRadix.Trigger asChild>
+                    <Button variant="icon" hover="danger">
+                      <TrashSimple size={16} />
+                    </Button>
+                  </AlertDialogRadix.Trigger>
+                  <AlertDialog
+                    id={vehicle.id}
+                    onClickAction={handleDeleteVehicle}
+                    description="Essa ação não pode ser
+                    desfeita. Isso excluirá permanentemente o veículo."
+                  />
+                </AlertDialogRadix.Root>
               </td>
             </tr>
           ))}

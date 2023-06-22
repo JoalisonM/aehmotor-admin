@@ -7,6 +7,11 @@ export const globalStyles = globalCss({
     boxSizing: 'border-box',
   },
 
+  ':focus': {
+    outline: 0,
+    boxShadow: '$solidBlueShadow',
+  },
+
   body: {
     backgroundColor: '$gray900',
     color: '$gray100',
@@ -20,5 +25,14 @@ export const globalStyles = globalCss({
 
   a: {
     textDecoration: 'none',
+  },
+
+  svg: {
+    lineHeight: 0,
+  },
+
+  '.leaflet-container': {
+    width: '100%',
+    height: '30rem',
   }
 });

@@ -49,6 +49,10 @@ export const Student = {
     return api.get(`${uriStudent}/${id}`);
   },
 
+  getByName(name: string) {
+    return api.get<StudentProps[]>(`${uriStudent}/${name}`);
+  },
+
   create(student: CreateStudentInput) {
     return api.post(`${uriStudent}`, student);
   },

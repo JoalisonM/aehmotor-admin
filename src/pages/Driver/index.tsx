@@ -1,30 +1,26 @@
-import { useEffect, useState } from "react";
-import * as Toast from "@radix-ui/react-toast";
+import { useEffect } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { TrashSimple, PencilSimpleLine } from "phosphor-react";
+import * as AlertDialogRadix from '@radix-ui/react-alert-dialog';
 
-import {
-  Header,
-  Container,
-  ToastRoot,
-  ToastTitle,
-  ToastViewport,
-  NewDriverButton,
-} from "./styles";
+import { Container } from "./styles";
 import {DriverModal } from "./DriverModal";
 import { DriverProps } from "../../api/driver";
 import { useDrivers } from "../../hooks/useDrivers";
 import { Table } from "../../styles/components/table";
 import { SearchForm } from "../../components/SearchForm";
+import { AlertDialog } from "../../components/AlertDialog";
+import { Button } from "../../styles/components/button";
+import { Header } from "../../components/Header";
 
 export const Driver = () => {
-  const [openToast, setOpenToast] = useState(false);
   const {
     drivers,
     setDriver,
     getDriver,
     fetchDrivers,
     deleteDriver,
+    getDriverByName,
   } = useDrivers();
 
   useEffect(() => {
@@ -41,26 +37,26 @@ export const Driver = () => {
 
   const handleDeleteDriver = (id: number) => {
     deleteDriver(id);
-    setOpenToast(true);
+  };
+
+  const handleSearchFilter = (name: string) => {
+    getDriverByName(name);
   };
 
   return (
     <Container>
-      <Header>
-        <h1>Motorista</h1>
-        <Dialog.Root>
-          <Dialog.Trigger asChild>
-            <NewDriverButton
-              onClick={() => handleShowDriver()}
-            >
-              Novo motorista
-            </NewDriverButton>
-          </Dialog.Trigger>
-
-          <DriverModal />
-        </Dialog.Root>
+      <Header
+        title="Motorista"
+        buttonTitle="Novo motorista"
+        onShowModal={handleShowDriver}
+      >
+        <DriverModal />
       </Header>
-      <SearchForm placeholder="Buscar por motoristas" />
+      <SearchForm
+        onSearchAll={fetchDrivers}
+        placeholder="Buscar por motoristas"
+        onSearchFilter={handleSearchFilter}
+      />
 
       <Table>
         <thead>
@@ -70,7 +66,6 @@ export const Driver = () => {
             <th>Nome</th>
             <th>E-mail</th>
             <th>Telefone</th>
-            <th>Cargo</th>
             <th>Nascimento</th>
           </tr>
         </thead>
@@ -82,30 +77,34 @@ export const Driver = () => {
               <td>{driver.nome}</td>
               <td>{driver.email}</td>
               <td>{driver.telefone}</td>
-              <td>{driver.cargo}</td>
               <td>{driver.nascimento}</td>
               <td>
                 <Dialog.Root>
                   <Dialog.Trigger asChild>
-                    <button onClick={() => handleShowDriver(driver.id)}>
+                    <Button
+                      variant="icon"
+                      onClick={() => handleShowDriver(driver.id)}
+                    >
                       <PencilSimpleLine size={16} />
-                    </button>
+                    </Button>
                   </Dialog.Trigger>
 
                   <DriverModal />
                 </Dialog.Root>
               </td>
               <td>
-                <Toast.Provider duration={3000}>
-                  <button onClick={() => handleDeleteDriver(driver.id)}>
-                    <TrashSimple size={16} />
-                  </button>
-
-                  <ToastRoot open={openToast} onOpenChange={setOpenToast}>
-                    <ToastTitle>Motorista deletada com sucesso!</ToastTitle>
-                  </ToastRoot>
-                  <ToastViewport />
-                </Toast.Provider>
+                <AlertDialogRadix.Root>
+                  <AlertDialogRadix.Trigger asChild>
+                    <Button variant="icon">
+                      <TrashSimple size={16} />
+                    </Button>
+                  </AlertDialogRadix.Trigger>
+                  <AlertDialog
+                    id={driver.id}
+                    onClickAction={handleDeleteDriver}
+                    description="Essa ação não pode ser desfeita. Isso excluirá permanentemente o motorista."
+                  />
+                </AlertDialogRadix.Root>
               </td>
             </tr>
           ))}

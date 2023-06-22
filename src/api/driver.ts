@@ -43,6 +43,10 @@ export const Driver = {
     return api.get(`${uriDriver}/${id}`);
   },
 
+  getByName(name: string) {
+    return api.get<DriverProps[]>(`${uriDriver}/${name}`);
+  },
+
   create(driver: CreateDriverInput) {
     return api.post(`${uriDriver}`, driver);
   },

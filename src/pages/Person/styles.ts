@@ -2,11 +2,8 @@ import * as Toast from "@radix-ui/react-toast";
 
 import { styled, keyframes } from "../../styles";
 
-export const Container = styled("section", {
-  maxWidth: "64rem",
-  minWidth: "60rem",
-  margin: "4rem auto 0",
-  padding: "0 3rem",
+export const Container = styled("main", {
+  padding: "2rem 3rem",
 
   display: "flex",
   flexDirection: "column",

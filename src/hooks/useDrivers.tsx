@@ -9,6 +9,7 @@ interface DriversContextType {
   deleteDriver: (id: number) => void;
   setDriver: (value: DriverProps) => void;
   getDriver: (id: number) => Promise<void>;
+  getDriverByName: (name: string) => Promise<void>;
   createDriver: (data: CreateDriverInput) => Promise<void>;
   updateDriver: (data: UpdateDriverInput) => Promise<void>;
 }
@@ -35,6 +36,16 @@ export const DriversContextProvider = ({ children }: DriversContextProviderProps
 
       if (response) {
         setDriver(response.data);
+      }
+    }, []
+  );
+
+  const getDriverByName = useCallback(
+    async (name: string) => {
+      const response = await Driver.getByName(name);
+
+      if (response) {
+        setDrivers(response.data);
       }
     }, []
   );
@@ -97,6 +108,7 @@ export const DriversContextProvider = ({ children }: DriversContextProviderProps
         createDriver,
         updateDriver,
         deleteDriver,
+        getDriverByName,
       }}
     >
       {children}
@@ -113,6 +125,7 @@ export const useDrivers = () => {
   const createDriver = useContextSelector(DriversContext, (context) => context.createDriver);
   const updateDriver = useContextSelector(DriversContext, (context) => context.updateDriver);
   const deleteDriver = useContextSelector(DriversContext, (context) => context.deleteDriver);
+  const getDriverByName = useContextSelector(DriversContext, (context) => context.getDriverByName);
 
   return {
     driver,
@@ -123,5 +136,6 @@ export const useDrivers = () => {
     createDriver,
     updateDriver,
     deleteDriver,
+    getDriverByName,
   };
 }

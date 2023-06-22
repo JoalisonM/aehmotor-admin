@@ -9,6 +9,7 @@ interface EmployeesContextType {
   deleteEmployee: (id: number) => void;
   setEmployee: (value: EmployeeProps) => void;
   getEmployee: (id: number) => Promise<void>;
+  getEmployeeByName: (name: string) => Promise<void>;
   createEmployee: (data: CreateEmployeeInput) => Promise<void>;
   updateEmployee: (data: UpdateEmployeeInput) => Promise<void>;
 }
@@ -35,6 +36,16 @@ export const EmployeesContextProvider = ({ children }: EmployeesContextProviderP
 
       if (response) {
         setEmployee(response.data);
+      }
+    }, []
+  );
+
+  const getEmployeeByName = useCallback(
+    async (name: string) => {
+      const response = await Employee.getByName(name);
+
+      if (response) {
+        setEmployees(response.data);
       }
     }, []
   );
@@ -95,6 +106,7 @@ export const EmployeesContextProvider = ({ children }: EmployeesContextProviderP
         createEmployee,
         updateEmployee,
         deleteEmployee,
+        getEmployeeByName,
       }}
     >
       {children}
@@ -111,6 +123,7 @@ export const useEmployees = () => {
   const createEmployee = useContextSelector(EmployeesContext, (context) => context.createEmployee);
   const updateEmployee = useContextSelector(EmployeesContext, (context) => context.updateEmployee);
   const deleteEmployee = useContextSelector(EmployeesContext, (context) => context.deleteEmployee);
+  const getEmployeeByName = useContextSelector(EmployeesContext, (context) => context.getEmployeeByName);
 
   return {
     employee,
@@ -121,5 +134,6 @@ export const useEmployees = () => {
     createEmployee,
     updateEmployee,
     deleteEmployee,
+    getEmployeeByName,
   };
 }

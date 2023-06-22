@@ -37,6 +37,10 @@ export const {
       lg: '1.25rem',
       xl: '1.5rem',
       xxl: '2rem',
-    }
-  }
+    },
+
+    shadows: {
+      solidBlueShadow: '0 0 0 2px #596DB9',
+    },
+  },
 });

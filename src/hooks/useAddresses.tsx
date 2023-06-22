@@ -9,7 +9,8 @@ interface AddressContextType {
   deleteAddress: (id: number) => void;
   setAddress: (value: AddressProps) => void;
   getAddress: (id: number) => Promise<void>;
-  createAddress: (data: CreateAddressInput) => Promise<void>;
+  getAddressByStreet: (street: string) => Promise<void>;
+  createAddress: (data: CreateAddressInput) => Promise<AddressProps | undefined>;
   updateAddress: (data: UpdateAddressInput) => Promise<void>;
 }
 
@@ -35,6 +36,16 @@ export const AddressContextProvider = ({ children }: AddressContextProviderProps
 
       if (response) {
         setAddress(response.data);
+      }
+    }, []
+  );
+
+  const getAddressByStreet = useCallback(
+    async (street: string) => {
+      const response = await Address.getByStreet(street);
+
+      if (response) {
+        setAddresses(response.data);
       }
     }, []
   );
@@ -99,6 +110,7 @@ export const AddressContextProvider = ({ children }: AddressContextProviderProps
         createAddress,
         updateAddress,
         deleteAddress,
+        getAddressByStreet,
       }}
     >
       {children}
@@ -115,6 +127,7 @@ export const useAddresses = () => {
   const createAddress = useContextSelector(AddressContext, (context) => context.createAddress);
   const updateAddress = useContextSelector(AddressContext, (context) => context.updateAddress);
   const deleteAddress = useContextSelector(AddressContext, (context) => context.deleteAddress);
+  const getAddressByStreet = useContextSelector(AddressContext, (context) => context.getAddressByStreet);
 
   return {
     address,
@@ -125,5 +138,6 @@ export const useAddresses = () => {
     createAddress,
     updateAddress,
     deleteAddress,
+    getAddressByStreet,
   };
 }

@@ -41,22 +41,22 @@ const menuItems = {
   },
   DRIVER: {
     path: "/motoristas",
-      name: "Motorista",
+    name: "Motorista",
     icon: <IdentificationCard size={18} weight="fill" />
   },
   VEHICLE: {
     path: "/veiculos",
-      name: "Veículo",
+    name: "Veículo",
     icon: <Bus size={18} weight="fill" />
   },
   CITY_HALL: {
     path: "/prefeituras",
-      name: "Prefeitura",
+    name: "Prefeitura",
     icon: <Buildings size={18} weight="fill" />
   },
   ROUTE: {
     path: "/rotas",
-      name: "Rota",
+    name: "Rota",
     icon: <MapPin size={18} weight="fill" />
   },
 };
@@ -91,7 +91,7 @@ export const Sidebar = ({ menuShown, onMenuShown }: SidebarProps) => {
         ))
       ) : (
         Object.entries(menuItems).map(([key, item]) => (
-          <Tooltip.Provider delayDuration={300}>
+          <Tooltip.Provider delayDuration={200}>
             <Tooltip.Root>
               <Tooltip.Trigger asChild>
                 <Item

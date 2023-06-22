@@ -13,6 +13,7 @@ import {
 } from "./styles";
 import { usePeople } from "../../../hooks/usePeople";
 import { useEffect } from "react";
+import { Label } from "../../../styles/components/label";
 
 const newPessoaFormSchema = z.object({
   nome: z.string().nonempty("O nome é obrigatório"),
@@ -85,7 +86,9 @@ export const PersonModal = () => {
 
         <form onSubmit={handleSubmit(handleCreateNewPessoa)}>
           <Row>
+            <Label htmlFor="nome">Nome:</Label>
             <input
+              id="nome"
               type="text"
               placeholder="Nome"
               {...register("nome")}
@@ -93,7 +96,9 @@ export const PersonModal = () => {
             {errors.nome && <MessageError>{errors.nome.message}</MessageError>}
           </Row>
           <Row>
+            <Label htmlFor="email">E-mail:</Label>
             <input
+              id="email"
               type="text"
               placeholder="E-mail"
               {...register("email")}
@@ -101,7 +106,9 @@ export const PersonModal = () => {
             {errors.email && <MessageError>{errors.email.message}</MessageError>}
           </Row>
           <Row>
+            <Label htmlFor="telefone">Telefone:</Label>
             <input
+              id="telefone"
               type="text"
               placeholder="Telefone"
               {...register("telefone")}
@@ -109,7 +116,9 @@ export const PersonModal = () => {
             {errors.telefone && <MessageError>{errors.telefone.message}</MessageError>}
           </Row>
           <Row>
+            <Label htmlFor="nascimento">Data de nascimento:</Label>
             <input
+              id="nascimento"
               type="date"
               placeholder="Data de nascimento"
               {...register("nascimento")}
@@ -117,7 +126,9 @@ export const PersonModal = () => {
             {errors.nascimento && <MessageError>{errors.nascimento.message}</MessageError>}
           </Row>
           <Row>
+            <Label htmlFor="senha">Senha:</Label>
             <input
+              id="senha"
               type="password"
               placeholder="Senha"
               {...register("senha")}

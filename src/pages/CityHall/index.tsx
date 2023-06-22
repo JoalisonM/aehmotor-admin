@@ -1,25 +1,27 @@
-import { useEffect, useState } from "react";
-import * as Toast from "@radix-ui/react-toast";
+import { useEffect } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { TrashSimple, PencilSimpleLine } from "phosphor-react";
+import * as AlertDialogRadix from '@radix-ui/react-alert-dialog';
 
-import {
-  Container,
-  Header,
-  NewCityHallButton,
-  ToastRoot,
-  ToastTitle,
-  ToastViewport,
-} from "./styles";
+import { Container } from "./styles";
 import { CityHallModal } from "./CityHallModal";
 import { CityHallProps } from "../../api/cityHall";
 import { Table } from "../../styles/components/table";
 import { SearchForm } from "../../components/SearchForm";
+import { AlertDialog } from "../../components/AlertDialog";
 import { usePrefectures } from "../../hooks/usePrefectures";
+import { Button } from "../../styles/components/button";
+import { Header } from "../../components/Header";
 
 export const CityHall = () => {
-  const [openToast, setOpenToast] = useState(false);
-  const { prefectures, fetchPrefectures, setCityHall, getCityHall, deleteCityHall } = usePrefectures();
+  const {
+    prefectures,
+    setCityHall,
+    getCityHall,
+    deleteCityHall,
+    fetchPrefectures,
+    getCityHallByName,
+  } = usePrefectures();
 
   useEffect(() => {
     fetchPrefectures();
@@ -35,69 +37,68 @@ export const CityHall = () => {
 
   const handleDeleteCityHall = (id: number) => {
     deleteCityHall(id);
-    setOpenToast(true);
+  };
+
+  const handleSearchFilter = (name: string) => {
+    getCityHallByName(name);
   };
 
   return (
     <Container>
-      <Header>
-        <h1>Faculdade</h1>
-        <Dialog.Root>
-          <Dialog.Trigger asChild>
-            <NewCityHallButton
-              onClick={() => handleShowCityHall()}
-            >
-              Nova faculdade
-            </NewCityHallButton>
-          </Dialog.Trigger>
-
-          <CityHallModal />
-        </Dialog.Root>
+      <Header
+        title="Prefeitura"
+        buttonTitle="Nova prefeitura"
+        onShowModal={handleShowCityHall}
+      >
+        <CityHallModal />
       </Header>
-      <SearchForm placeholder="Buscar por endereços" />
+      <SearchForm
+        onSearchAll={fetchPrefectures}
+        placeholder="Buscar por endereços"
+        onSearchFilter={handleSearchFilter}
+      />
 
       <Table>
         <thead>
           <tr>
             <th>Id</th>
+            <th>Nome</th>
             <th>Id secretário</th>
-            <th>Id endereço</th>
           </tr>
         </thead>
         <tbody>
           {prefectures && prefectures.map((cityHall) => (
             <tr key={cityHall.id}>
               <td>{cityHall.id}</td>
+              <td>{cityHall.nome}</td>
               <td>{cityHall.secretario}</td>
-              <td>{cityHall.id_endereco}</td>
               <td>
                 <Dialog.Root>
                   <Dialog.Trigger asChild>
-                    <button>
+                    <Button variant="icon">
                       <PencilSimpleLine
                         size={16}
                         onClick={() => handleShowCityHall(cityHall.id)}
                       />
-                    </button>
+                    </Button>
                   </Dialog.Trigger>
 
                   <CityHallModal />
                 </Dialog.Root>
               </td>
               <td>
-                <Toast.Provider duration={3000}>
-                  <button>
-                    <TrashSimple
-                      size={16}
-                      onClick={() => handleDeleteCityHall(cityHall.id)}
-                    />
-                  </button>
-
-                  <ToastRoot open={openToast} onOpenChange={setOpenToast}>
-                    <ToastTitle>Faculdade deletada com sucesso!</ToastTitle>
-                  </ToastRoot>
-                  <ToastViewport />
-                </Toast.Provider>
+                <AlertDialogRadix.Root>
+                  <AlertDialogRadix.Trigger asChild>
+                    <Button variant="icon">
+                      <TrashSimple size={16} />
+                    </Button>
+                  </AlertDialogRadix.Trigger>
+                  <AlertDialog
+                    id={cityHall.id}
+                    onClickAction={handleDeleteCityHall}
+                    description="Essa ação não pode ser desfeita. Isso excluirá permanentemente a prefeitura."
+                  />
+                </AlertDialogRadix.Root>
               </td>
             </tr>
           ))}

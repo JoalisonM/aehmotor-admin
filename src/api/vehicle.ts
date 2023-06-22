@@ -34,6 +34,10 @@ export const Vehicle = {
     return api.get(`${uriVehicle}/${id}`);
   },
 
+  getByName(licensePlate: string) {
+    return api.get<VehicleProps[]>(`${uriVehicle}/${licensePlate}`);
+  },
+
   create(vehicle: CreateVehicleInput) {
     return api.post(`${uriVehicle}`, vehicle);
   },

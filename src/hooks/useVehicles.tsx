@@ -9,6 +9,7 @@ interface VehiclesContextType {
   deleteVehicle: (id: number) => void;
   setVehicle: (value: VehicleProps) => void;
   getVehicle: (id: number) => Promise<void>;
+  getVehicleByName: (name: string) => Promise<void>;
   createVehicle: (data: CreateVehicleInput) => Promise<void>;
   updateVehicle: (data: UpdateVehicleInput) => Promise<void>;
 }
@@ -35,6 +36,16 @@ export const VehiclesContextProvider = ({ children }: VehiclesContextProviderPro
 
       if (response) {
         setVehicle(response.data);
+      }
+    }, []
+  );
+
+  const getVehicleByName = useCallback(
+    async (name: string) => {
+      const response = await Vehicle.getByName(name);
+
+      if (response) {
+        setVehicles(response.data);
       }
     }, []
   );
@@ -91,6 +102,7 @@ export const VehiclesContextProvider = ({ children }: VehiclesContextProviderPro
         createVehicle,
         updateVehicle,
         deleteVehicle,
+        getVehicleByName,
       }}
     >
       {children}
@@ -107,6 +119,7 @@ export const useVehicles = () => {
   const createVehicle = useContextSelector(VehiclesContext, (context) => context.createVehicle);
   const updateVehicle = useContextSelector(VehiclesContext, (context) => context.updateVehicle);
   const deleteVehicle = useContextSelector(VehiclesContext, (context) => context.deleteVehicle);
+  const getVehicleByName = useContextSelector(VehiclesContext, (context) => context.getVehicleByName);
 
   return {
     vehicle,
@@ -117,5 +130,6 @@ export const useVehicles = () => {
     createVehicle,
     updateVehicle,
     deleteVehicle,
+    getVehicleByName,
   };
 }

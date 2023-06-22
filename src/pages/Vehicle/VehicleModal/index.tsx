@@ -13,11 +13,18 @@ import {
   MessageError,
 } from "./styles";
 import { useVehicles } from "../../../hooks/useVehicles";
+import { Label } from "../../../styles/components/label";
 
 const newVehicleFormSchema = z.object({
-  placa: z.string().nonempty("A placa é obrigatória"),
-  cidade: z.string().nonempty("A cidade é obrigatória"),
-  tipo_veiculo: z.string().nonempty("O nome é obrigatório"),
+  placa: z.string().nonempty("A placa é obrigatória")
+    .trim()
+    .min(1, { message: "Deve ter mais de 1 caractere"}),
+  cidade: z.string().nonempty("A cidade é obrigatória")
+    .trim()
+    .min(1, { message: "Deve ter mais de 1 caractere"}),
+  tipo_veiculo: z.string().nonempty("O nome é obrigatório")
+    .trim()
+    .min(1, { message: "Deve ter mais de 1 caractere"}),
   qtd_passageiros: z.number().nonnegative("A quantidade de passageiros tem que ser maior que 0"),
 });
 
@@ -79,7 +86,9 @@ export const VehicleModal = () => {
 
           <form onSubmit={handleSubmit(handleCreateNewVehicle)}>
             <Fieldset>
+              <Label htmlFor="cidade">Cidade:</Label>
               <input
+                id="cidade"
                 type="text"
                 placeholder="Cidade"
                 {...register("cidade")}
@@ -87,7 +96,9 @@ export const VehicleModal = () => {
               {errors.cidade && <MessageError>{errors.cidade.message}</MessageError>}
             </Fieldset>
             <Fieldset>
+              <Label htmlFor="placa">Placa:</Label>
               <input
+                id="placa"
                 type="text"
                 placeholder="Placa"
                 {...register("placa")}
@@ -95,7 +106,9 @@ export const VehicleModal = () => {
               {errors.placa && <MessageError>{errors.placa.message}</MessageError>}
             </Fieldset>
             <Fieldset>
+              <Label htmlFor="tipo">Tipo do veículo:</Label>
               <input
+                id="tipo"
                 type="text"
                 placeholder="Tipo do veículo"
                 {...register("tipo_veiculo")}
@@ -103,7 +116,9 @@ export const VehicleModal = () => {
               {errors.tipo_veiculo && <MessageError>{errors.tipo_veiculo.message}</MessageError>}
             </Fieldset>
             <Fieldset>
+              <Label htmlFor="quantidade_passageiros">Quantidade de passageiros:</Label>
               <input
+                id="quantidade_passageiros"
                 type="number"
                 placeholder="Quantidade de passageiros"
                 {...register("qtd_passageiros", { valueAsNumber: true })}

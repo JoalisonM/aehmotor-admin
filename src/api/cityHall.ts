@@ -1,20 +1,24 @@
 import { api } from "../lib/axios";
+import { AddressProps, CreateAddressInput, UpdateAddressInput } from "./address";
 
 export interface CityHallProps {
   id: number;
+  nome: string;
   secretario: number;
-  id_endereco: number;
+  endereco: AddressProps;
 }
 
 export interface CreateCityHallInput {
+  nome: string;
   secretario: number;
-  id_endereco: number;
+  endereco: CreateAddressInput;
 }
 
 export interface UpdateCityHallInput {
   id: number;
+  nome: string;
   secretario: number;
-  id_endereco: number;
+  endereco: CreateAddressInput;
 }
 
 const uriCityHall = "prefeituras"
@@ -26,6 +30,10 @@ export const CityHall = {
 
   get(id: number) {
     return api.get(`${uriCityHall}/${id}`);
+  },
+
+  getByName(name: string) {
+    return api.get<CityHallProps[]>(`${uriCityHall}/${name}`);
   },
 
   create(cityHall: CreateCityHallInput) {

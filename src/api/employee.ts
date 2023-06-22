@@ -40,6 +40,10 @@ export const Employee = {
     return api.get(`${uriEmployee}/${id}`);
   },
 
+  getByName(name: string) {
+    return api.get<EmployeeProps[]>(`${uriEmployee}/${name}`);
+  },
+
   create(employee: CreateEmployeeInput) {
     return api.post(`${uriEmployee}`, employee);
   },

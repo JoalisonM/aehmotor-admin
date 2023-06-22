@@ -13,22 +13,37 @@ import {
   MessageError,
 } from "./styles";
 import { useEmployees } from "../../../hooks/useEmployees";
-import { useAddresses } from "../../../hooks/useAddresses";
-import { AddressProps } from "../../../api/address";
 import { AddressFields } from "./Address";
 import { usePrefectures } from "../../../hooks/usePrefectures";
 import { Option, Select } from "../../../styles/components/select";
 import { usePeople } from "../../../hooks/usePeople";
+import { Label } from "../../../styles/components/label";
 
 const newCollegeFormSchema = z.object({
-  secretario: z.string().nonempty("O secretário é obrigatório"),
-  id_cidade: z.string().nonempty("A cidade é obrigatória"),
-  id_pessoa: z.string().nonempty("O usuário é obrigatório"),
-  cep: z.string().nonempty("O cep é obrigatório"),
-  logradouro: z.string().nonempty("O logradouro é obrigatório"),
-  numero: z.number(),
-  complemento: z.string().nonempty("O complemento é obrigatório"),
-  referencia: z.string().nonempty("O referência é obrigatória"),
+  nome: z.string().nonempty("O nome é obrigatório")
+    .trim()
+    .min(1, { message: "Deve ter mais de 1 caractere"}),
+  secretario: z.string().nonempty("O secretário é obrigatório")
+    .trim()
+    .min(1, { message: "Deve ter mais de 1 caractere"}),
+  endereco: z.object({
+    id_cidade: z.number(),
+    id_pessoa: z.number(),
+    cep: z.string().nonempty("O cep é obrigatório")
+      .trim()
+      .min(1, { message: "Deve ter mais de 1 caractere"}),
+    logradouro: z.string().nonempty("O logradouro é obrigatório")
+      .trim()
+      .min(1, { message: "Deve ter mais de 1 caractere"}),
+    numero: z.number().nonnegative("Número tem que ser maior que 0")
+      .min(1, { message: "Deve ter mais de 1 caractere"}),
+    complemento: z.string().nonempty("O complemento é obrigatório")
+      .trim()
+      .min(1, { message: "Deve ter mais de 1 caractere"}),
+    referencia: z.string().nonempty("O referência é obrigatória")
+      .trim()
+      .min(1, { message: "Deve ter mais de 1 caractere"}),
+  })
 });
 
 export type NewAddressFormInputs = z.infer<typeof newCollegeFormSchema>
@@ -45,7 +60,6 @@ export const CityHallModal = () => {
   });
   const { people, fetchPeople } = usePeople();
   const { employees, fetchEmployees } = useEmployees();
-  const { address, getAddress, createAddress, updateAddress } = useAddresses();
   const { cityHall, createCityHall, updateCityHall } = usePrefectures();
 
   useEffect(() => {
@@ -57,66 +71,32 @@ export const CityHallModal = () => {
   }, [fetchEmployees]);
 
   useEffect(() => {
-    if (cityHall && cityHall.id_endereco) {
-      getAddress(cityHall.id_endereco);
+    if (cityHall.id) {
+      setValue("nome", cityHall.nome);
+      setValue("secretario", String(cityHall.secretario));
+      setValue("endereco", cityHall.endereco);
     }
   }, [cityHall]);
 
-  useEffect(() => {
-    if (cityHall.id) {
-      setValue("secretario", String(cityHall.secretario));
-      setValue("id_cidade", String(address.id_cidade));
-      setValue("id_pessoa", String(address.id_pessoa));
-      setValue("cep", address.cep);
-      setValue("numero", address.numero);
-      setValue("complemento", address.complemento);
-      setValue("referencia", address.referencia);
-      setValue("logradouro", address.logradouro);
-    }
-  }, [address]);
-
   const handleCreateNewAddress = async (data: NewAddressFormInputs) => {
-    const { secretario, id_cidade, id_pessoa,
-      cep, numero, complemento, referencia, logradouro } = data;
+    const { nome, secretario, endereco } = data;
 
-    let responseAddress: AddressProps;
-
-
-    if (!address.id) {
-      responseAddress = await createAddress({
-        id_cidade: Number(id_cidade),
-        id_pessoa: Number(id_pessoa),
-        cep,
-        numero,
-        complemento,
-        referencia,
-        logradouro,
-      });
-    } else {
-      updateAddress({
-        id: address.id,
-        id_cidade: Number(id_cidade),
-        id_pessoa: Number(id_pessoa),
-        cep,
-        numero,
-        complemento,
-        referencia,
-        logradouro,
-      });
-    }
+    console.log("endereco: ", endereco);
 
     if (!cityHall.id) {
       createCityHall({
+        nome,
         secretario: Number(secretario),
-        id_endereco: responseAddress.id,
+        endereco,
       });
 
       reset();
     } else {
       updateCityHall({
         id: cityHall.id,
+        nome,
         secretario: Number(secretario),
-        id_endereco: address.id,
+        endereco,
       });
     }
   }
@@ -133,7 +113,18 @@ export const CityHallModal = () => {
 
           <form onSubmit={handleSubmit(handleCreateNewAddress)}>
             <Fieldset>
+              <Label htmlFor="nome">Nome:</Label>
+              <input
+                id="nome"
+                type="text"
+                placeholder="Nome"
+                {...register("nome")}
+              />
+            </Fieldset>
+            <Fieldset>
+              <Label htmlFor="secretario">Secretário:</Label>
               <Select
+                id="secretario"
                 placeholder="Secretário"
                 {...register("secretario")}
               >

@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import * as Tooltip from '@radix-ui/react-tooltip';
 
-import { styled, keyframes } from "../../styles"
+import { styled } from "../../styles"
 
 export const Aside = styled("aside", {
   display: "flex",

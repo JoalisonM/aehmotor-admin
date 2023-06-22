@@ -43,6 +43,10 @@ export const Address = {
     return api.get(`${uriAddress}/${id}`);
   },
 
+  getByStreet(street: string) {
+    return api.get<AddressProps[]>(`${uriAddress}/${street}`);
+  },
+
   create(address: CreateAddressInput) {
     return api.post(`${uriAddress}`, address);
   },
@@ -50,10 +54,10 @@ export const Address = {
   update(address: UpdateAddressInput) {
     const { id, ...newAddress } = address;
 
-    return api.put(`${uriAddress}/${id}`, newAddress);
+    return api.put<AddressProps>(`${uriAddress}/${id}`, newAddress);
   },
 
   delete(id: number) {
     return api.delete(`${uriAddress}/${id}`);
-  }
+  },
 };

@@ -11,6 +11,7 @@ interface CitiesRoutesContextType {
   getCitiesRoute: (id: number) => Promise<void>;
   createCitiesRoute: (data: CreateRouteInput) => Promise<void>;
   updateCitiesRoute: (data: UpdateRouteInput) => Promise<void>;
+  getCitiesRouteByDestinationCity: (value: string) => Promise<void>;
 }
 
 interface CitiesRoutesContextProviderProps {
@@ -35,6 +36,16 @@ export const CitiesRoutesContextProvider = ({ children }: CitiesRoutesContextPro
 
       if (response) {
         setCitiesRoute(response.data);
+      }
+    }, []
+  );
+
+  const getCitiesRouteByDestinationCity = useCallback(
+    async (destinationCity: string) => {
+      const response = await Route.getByDestinationCity(destinationCity);
+
+      if (response) {
+        setCitiesRoutes(response.data);
       }
     }, []
   );
@@ -103,6 +114,7 @@ export const CitiesRoutesContextProvider = ({ children }: CitiesRoutesContextPro
         updateCitiesRoute,
         deleteCitiesRoute,
         fetchCitiesRoutes,
+        getCitiesRouteByDestinationCity,
       }}
     >
       {children}
@@ -119,6 +131,7 @@ export const useCitiesRoutes = () => {
   const createCitiesRoute = useContextSelector(CitiesRoutesContext, (context) => context.createCitiesRoute);
   const updateCitiesRoute = useContextSelector(CitiesRoutesContext, (context) => context.updateCitiesRoute);
   const deleteCitiesRoute = useContextSelector(CitiesRoutesContext, (context) => context.deleteCitiesRoute);
+  const getCitiesRouteByDestinationCity = useContextSelector(CitiesRoutesContext, (context) => context.getCitiesRouteByDestinationCity);
 
 
   return {
@@ -130,5 +143,6 @@ export const useCitiesRoutes = () => {
     createCitiesRoute,
     updateCitiesRoute,
     deleteCitiesRoute,
+    getCitiesRouteByDestinationCity,
   };
 }

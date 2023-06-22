@@ -18,4 +18,8 @@ export const City = {
   getAll() {
     return api.get(uriCity);
   },
+
+  getByName(name: string) {
+    return api.get<CityProps>(`${uriCity}/${name}`);
+  },
 };
