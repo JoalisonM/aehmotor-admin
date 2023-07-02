@@ -1,35 +1,114 @@
 import * as Toast from "@radix-ui/react-toast";
+import * as LabelRadix from '@radix-ui/react-label';
 
 import { styled, keyframes } from "../../styles";
 
-export const Container = styled("main", {
-  padding: "2rem 3rem",
+export const LoginContainer = styled('main', {
+  maxWidth: '70rem',
+  height: '100vh',
+  margin: '0 auto',
+  padding: '0 2rem',
+  fontFamily: 'Poppins',
 
-  display: "flex",
-  flexDirection: "column",
-  gap: "2rem",
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+});
 
-  h1: {
-    fontSize: "$xxl",
+export const LoginContent = styled('div', {
+  width: '100%',
+  display: 'grid',
+  gap: '6rem',
+  gridTemplateColumns: '1fr 24rem',
+  justifyContent: 'space-between',
+
+  button: {
+    marginBottom: '2.5rem',
+    fontFamily: 'Poppins',
+    fontWeight: 700,
+  },
+
+  small: {
+    color: '$gray500',
+
+    a: {
+      color: '$blue500',
+      marginLeft: '0.3rem',
+    },
+  },
+
+  '@sm': {
+
   },
 });
 
-export const Header = styled("div", {
-  width: "100%",
+export const SectionContent = styled('section', {
+  h1: {
+    fontSize: '$xxl',
+    color: '$blue400',
 
-  display: "flex",
-  justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'column',
+  },
+
+  p: {
+    color: '$blue100',
+    marginTop: '0.75rem',
+    fontWeight: 600,
+
+    span: {
+      color: '$blue500',
+      fontWeight: 700,
+    }
+  },
+
+  '@sm': {
+    display: 'none',
+  },
 });
 
-export const NewPersonButton = styled("button", {
-  height: "40px",
-  border: "0",
-  background: "$blue500",
-  color: "$gray100",
-  fontWeight: "700",
-  padding: "0 1.25rem",
-  borderRadius: "6px",
-  cursor: "pointer",
+export const ImgContent = styled('div', {
+  width: '100%',
+  marginTop: '3.5rem',
+
+  display: 'flex',
+  justifyContent: 'center',
+});
+
+export const Label = styled(LabelRadix.Root, {
+  fontWeight: 600,
+  padding: '0 0 0.2rem',
+});
+
+export const Input = styled('input', {
+  border: 0,
+  borderRadius: '14px',
+  height: '50px',
+  fontSize: '$sm',
+  color: '$gray300',
+  padding: '0.6rem',
+  backgroundColor: '$gray800',
+  fontFamily: 'Poppins',
+
+  '&::placeholder': {
+    fontSize: '0.75rem',
+    color: '$gray500',
+  },
+});
+
+export const Fieldset = styled("fieldset", {
+  border: 0,
+  display: 'flex',
+  flexDirection: 'column',
+
+  '&+fieldset': {
+    'marginTop': '1rem',
+  },
+});
+
+export const MessageError = styled('span', {
+  color: '$red300',
+  fontSize: '0.75rem',
 });
 
 const VIEWPORT_PADDING = 25;
@@ -97,7 +176,6 @@ export const ToastRoot = styled(Toast.Root, {
 export const ToastTitle = styled(Toast.Title, {
   gridArea: 'title',
   marginBottom: 5,
-  fontWeight: 500,
-  color: "$blue500",
+  color: "$red500",
   fontSize: 15,
 });

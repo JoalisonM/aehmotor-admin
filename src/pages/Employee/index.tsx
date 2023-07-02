@@ -11,7 +11,7 @@ import { useEmployees } from "../../hooks/useEmployees";
 import { SearchForm } from "../../components/SearchForm";
 import { AlertDialog } from "../../components/AlertDialog";
 import { Button } from "../../styles/components/button";
-import { Header } from "../../components/Header";
+import { TopCard } from "../../components/TopCard";
 
 export const Employee = () => {
   const {
@@ -45,13 +45,13 @@ export const Employee = () => {
 
   return (
     <Container>
-      <Header
+      <TopCard
         title="Funcionário"
         buttonTitle="Novo funcionário"
         onShowModal={handleShowEmployee}
       >
         <EmployeeModal />
-      </Header>
+      </TopCard>
       <SearchForm
         onSearchAll={fetchEmployees}
         placeholder="Buscar por funcionários"

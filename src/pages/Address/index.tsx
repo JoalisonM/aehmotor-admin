@@ -11,7 +11,7 @@ import { useAddresses } from "../../hooks/useAddresses";
 import { Button } from "../../styles/components/button";
 import { SearchForm } from "../../components/SearchForm";
 import { AlertDialog } from "../../components/AlertDialog";
-import { Header } from "../../components/Header";
+import { TopCard } from "../../components/TopCard";
 
 export const Address = () => {
   const {
@@ -45,13 +45,13 @@ export const Address = () => {
 
   return (
     <Container>
-      <Header
+      <TopCard
         title="Endereço"
         buttonTitle="Novo endereço"
         onShowModal={handleShowAddress}
       >
-        <AddressModal />
-      </Header>
+        <AddressModal  />
+      </TopCard>
       <SearchForm
         onSearchAll={fetchAddresses}
         placeholder="Buscar por endereços"

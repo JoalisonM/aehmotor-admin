@@ -11,7 +11,7 @@ import { Table } from "../../styles/components/table";
 import { SearchForm } from "../../components/SearchForm";
 import { AlertDialog } from "../../components/AlertDialog";
 import { Button } from "../../styles/components/button";
-import { Header } from "../../components/Header";
+import { TopCard } from "../../components/TopCard";
 
 export const Student = () => {
   const {
@@ -45,13 +45,13 @@ export const Student = () => {
 
   return (
     <Container>
-      <Header
+      <TopCard
         title="Aluno"
         buttonTitle="Novo aluno"
         onShowModal={handleShowStudent}
       >
         <StudentModal />
-      </Header>
+      </TopCard>
       <SearchForm
         onSearchAll={fetchStudents}
         placeholder="Buscar por alunos"

@@ -11,7 +11,7 @@ import { SearchForm } from "../../components/SearchForm";
 import { AlertDialog } from "../../components/AlertDialog";
 import { usePrefectures } from "../../hooks/usePrefectures";
 import { Button } from "../../styles/components/button";
-import { Header } from "../../components/Header";
+import { TopCard } from "../../components/TopCard";
 
 export const CityHall = () => {
   const {
@@ -45,13 +45,13 @@ export const CityHall = () => {
 
   return (
     <Container>
-      <Header
+      <TopCard
         title="Prefeitura"
         buttonTitle="Nova prefeitura"
         onShowModal={handleShowCityHall}
       >
         <CityHallModal />
-      </Header>
+      </TopCard>
       <SearchForm
         onSearchAll={fetchPrefectures}
         placeholder="Buscar por endereços"

@@ -64,6 +64,15 @@ export const Button = styled('button', {
         },
       },
     },
+
+    size: {
+      large: {
+        width: '100%',
+        height: '50px',
+        marginTop: '2rem',
+        borderRadius: '12px',
+      },
+    },
   },
 
   defaultVariants: {

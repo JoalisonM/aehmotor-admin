@@ -97,7 +97,7 @@ export const CollegeModal = () => {
     <Dialog.Portal>
       <Overlay>
         <Content>
-          <Dialog.Title>Endereço</Dialog.Title>
+          <Dialog.Title>Faculdade</Dialog.Title>
 
           <CloseButton>
             <X size={24} />

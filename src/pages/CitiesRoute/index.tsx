@@ -12,7 +12,7 @@ import { SearchForm } from "../../components/SearchForm";
 import { AlertDialog } from "../../components/AlertDialog";
 import { useCitiesRoutes } from "../../hooks/useCitiesRoutes";
 import { Button } from "../../styles/components/button";
-import { Header } from "../../components/Header";
+import { TopCard } from "../../components/TopCard";
 
 export const CitiesRoute = () => {
   const {
@@ -46,13 +46,13 @@ export const CitiesRoute = () => {
 
   return (
     <Container>
-      <Header
+      <TopCard
         title="Rota"
         buttonTitle="Nova rota"
         onShowModal={handleShowCitiesRoute}
       >
         <CitiesRouteModal />
-      </Header>
+      </TopCard>
       <SearchForm
         onSearchAll={fetchCitiesRoutes}
         placeholder="Buscar por motoristas"

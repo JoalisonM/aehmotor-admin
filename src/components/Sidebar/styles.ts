@@ -71,6 +71,32 @@ export const Item = styled(NavLink, {
   }
 });
 
+export const SignOutButton = styled('button', {
+  lineHeight: 0,
+  color: "$gray100",
+  margin: '3rem 0 0',
+  background: 'transparent',
+  border: 0,
+  cursor: 'pointer',
+  fontSize: '1rem',
+
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.5rem',
+
+  '&:hover': {
+    color: '$blue400',
+  },
+
+  variants: {
+    menuShown: {
+      false: {
+        justifyContent: 'center',
+      }
+    }
+  }
+});
+
 export const TooltipContent = styled(Tooltip.Content, {
   borderRadius: 4,
   padding: '10px 15px',

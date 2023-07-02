@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import * as ToastRadix from "@radix-ui/react-toast";
 
 import {
@@ -12,7 +12,7 @@ interface ToastProps {
   icon: ReactNode;
   openToast: boolean;
   onOpenToast: (value: boolean) => void;
-  onClickAction: (value?: string) => void;
+  onClickAction: (value?: number) => void;
 }
 
 export const Toast = (props: ToastProps) => {
@@ -20,8 +20,8 @@ export const Toast = (props: ToastProps) => {
 
   return (
     <ToastRadix.Provider duration={3000}>
-      <button>
-        {React.createElement(icon, {})}
+      <button onClick={() => onClickAction(id)}>
+        {icon}
       </button>
 
       <ToastRoot open={openToast} onOpenChange={onOpenToast}>

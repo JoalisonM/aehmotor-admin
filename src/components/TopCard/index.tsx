@@ -4,15 +4,20 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { HeaderContainer } from "./styles";
 import { Button } from "../../styles/components";
 
-interface HeaderProps {
+interface TopCardProps {
   title: string;
   buttonTitle: string;
   children: ReactNode;
   onShowModal: () => void;
 }
 
-export const Header = (props: HeaderProps) => {
-  const { title, buttonTitle, children, onShowModal } = props;
+export const TopCard = (props: TopCardProps) => {
+  const {
+    title,
+    children,
+    onShowModal,
+    buttonTitle,
+  } = props;
   return (
     <HeaderContainer>
       <h1>{title}</h1>

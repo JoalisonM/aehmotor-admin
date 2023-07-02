@@ -7,7 +7,7 @@ import { Container } from "./styles";
 import { VehicleModal } from "./VehicleModal";
 import { VehicleProps } from "../../api/vehicle";
 import { Button } from "../../styles/components";
-import { Header } from "../../components/Header";
+import { TopCard } from "../../components/TopCard";
 import { useVehicles } from "../../hooks/useVehicles";
 import { Table } from "../../styles/components/table";
 import { SearchForm } from "../../components/SearchForm";
@@ -45,13 +45,13 @@ export const Vehicle = () => {
 
   return (
     <Container>
-      <Header
+      <TopCard
         title="Veículo"
         buttonTitle="Novo veículo"
         onShowModal={handleShowVehicle}
       >
         <VehicleModal />
-      </Header>
+      </TopCard>
       <SearchForm
         onSearchAll={fetchVehicles}
         placeholder="Buscar por endereços"

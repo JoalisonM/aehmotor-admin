@@ -3,22 +3,28 @@ import {
   User,
   List,
   House,
+  MapPin,
+  SignOut,
   Student,
   Buildings,
-  MapPin,
+  ChartBar,
   GraduationCap,
   IdentificationCard,
 } from "phosphor-react";
+import { useNavigate } from "react-router-dom";
 import * as Tooltip from '@radix-ui/react-tooltip';
 
-import { Aside, Header, Item, TooltipContent, TooltipArrow } from "./styles";
+import {
+  Aside, Header, Item, TooltipContent, TooltipArrow, SignOutButton
+} from "./styles";
+import { useAuth } from "../../contexts/auth";
 
 const menuItems = {
-  // PERSON: {
-  //   path: "/pessoas",
-  //   name: "Pessoa",
-  //   icon: <Person size={18} weight="fill" />
-  // },
+  DASHBOARD: {
+    path: "/dashboard",
+    name: "Dashboard",
+    icon: <ChartBar size={18} weight="fill" />
+  },
   EMPLOYER: {
     path: "/funcionarios",
     name: "Funcionário",
@@ -67,8 +73,16 @@ interface SidebarProps {
 }
 
 export const Sidebar = ({ menuShown, onMenuShown }: SidebarProps) => {
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
+
   const handleMenuShown = () => {
     onMenuShown(!menuShown);
+  };
+
+  const handleSignOut = () => {
+    signOut();
+    navigate("/login");
   };
 
   return (
@@ -80,37 +94,53 @@ export const Sidebar = ({ menuShown, onMenuShown }: SidebarProps) => {
         </button>
       </Header>
       {menuShown ? (
-        Object.entries(menuItems).map(([key, item]) => (
-          <Item
-            key={key}
-            to={item.path}
+        <>
+          {Object.entries(menuItems).map(([key, item]) => (
+            <Item
+              key={key}
+              to={item.path}
+            >
+              {item.icon}
+              <span>{item.name}</span>
+            </Item>
+          ))}
+          <SignOutButton
+            menuShown={menuShown}
+            onClick={() => handleSignOut()}
           >
-            {item.icon}
-            <span>{item.name}</span>
-          </Item>
-        ))
+            <SignOut size={18} weight="bold" />
+            Sair
+          </SignOutButton>
+        </>
       ) : (
-        Object.entries(menuItems).map(([key, item]) => (
-          <Tooltip.Provider delayDuration={200}>
-            <Tooltip.Root>
-              <Tooltip.Trigger asChild>
-                <Item
-                  key={key}
-                  to={item.path}
-                  menuShown={menuShown}
-                >
-                  {item.icon}
-                </Item>
-              </Tooltip.Trigger>
-              <Tooltip.Portal>
-                <TooltipContent side="right" sideOffset={5}>
-                  {item.name}
-                  <TooltipArrow />
-                </TooltipContent>
-              </Tooltip.Portal>
-            </Tooltip.Root>
-          </Tooltip.Provider>
-        ))
+          <>
+            {Object.entries(menuItems).map(([key, item]) => (
+              <Tooltip.Provider key={key} delayDuration={200}>
+                <Tooltip.Root>
+                  <Tooltip.Trigger asChild>
+                    <Item
+                      to={item.path}
+                      menuShown={menuShown}
+                    >
+                      {item.icon}
+                    </Item>
+                  </Tooltip.Trigger>
+                  <Tooltip.Portal>
+                    <TooltipContent side="right" sideOffset={5}>
+                      {item.name}
+                      <TooltipArrow />
+                    </TooltipContent>
+                  </Tooltip.Portal>
+                </Tooltip.Root>
+              </Tooltip.Provider>
+            ))}
+            <SignOutButton
+              menuShown={menuShown}
+              onClick={() => handleSignOut()}
+            >
+              <SignOut size={18} weight="bold" />
+            </SignOutButton>
+          </>
       )}
     </Aside>
   );

@@ -11,7 +11,7 @@ import { Table } from "../../styles/components/table";
 import { SearchForm } from "../../components/SearchForm";
 import { AlertDialog } from "../../components/AlertDialog";
 import { Button } from "../../styles/components/button";
-import { Header } from "../../components/Header";
+import { TopCard } from "../../components/TopCard";
 
 export const Driver = () => {
   const {
@@ -45,13 +45,13 @@ export const Driver = () => {
 
   return (
     <Container>
-      <Header
+      <TopCard
         title="Motorista"
         buttonTitle="Novo motorista"
         onShowModal={handleShowDriver}
       >
         <DriverModal />
-      </Header>
+      </TopCard>
       <SearchForm
         onSearchAll={fetchDrivers}
         placeholder="Buscar por motoristas"
