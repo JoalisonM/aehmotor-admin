@@ -24,7 +24,7 @@ const newCitiesRouteModalFormSchema = z.object({
   id_veiculo: z.number(),
   id_motorista: z.number(),
   id_prefeitura: z.number(),
-  id_instituicao_ensino: z.number(),
+  instituicoes_ensino: z.array(z.string()),
   cidade_origem: z.string()
     .nonempty("A cidade de origem é obrigatória")
     .trim()
@@ -81,10 +81,11 @@ export const CitiesRouteModal = () => {
   }, [fetchVehicles]);
 
   useEffect(() => {
+    let instituicoes = citiesRoute.instituicoes_ensino.split("")
     setValue("id_veiculo", citiesRoute.id_veiculo);
     setValue("id_motorista", citiesRoute.id_motorista);
     setValue("id_prefeitura", citiesRoute.id_prefeitura);
-    setValue("id_instituicao_ensino", citiesRoute.id_instituicao_ensino);
+    setValue("instituicoes_ensino", [citiesRoute.instituicoes_ensino]);
     setValue("cidade_origem", citiesRoute.cidade_origem);
     setValue("cidade_destino", citiesRoute.cidade_destino);
     setValue("qtd_alunos", citiesRoute.qtd_alunos);
@@ -93,17 +94,18 @@ export const CitiesRouteModal = () => {
   }, [citiesRoute]);
 
   const handleCreateNewPessoa = async (data: NewCitiesRouteFormInputs) => {
-    const { id_veiculo, id_motorista, id_prefeitura, id_instituicao_ensino,
+    const { id_veiculo, id_motorista, id_prefeitura, instituicoes_ensino,
       cidade_origem, cidade_destino, qtd_alunos, horario_chegada,
       horario_saida,
     } = data;
+    const instituicoes = citiesRoute.instituicoes_ensino.split("")
 
     if (!citiesRoute.id) {
       createCitiesRoute({
         id_veiculo,
         id_motorista,
         id_prefeitura,
-        id_instituicao_ensino,
+        instituicoes_ensino: instituicoes,
         qtd_alunos,
         cidade_origem,
         cidade_destino,
@@ -118,7 +120,7 @@ export const CitiesRouteModal = () => {
         id_veiculo,
         id_motorista,
         id_prefeitura,
-        id_instituicao_ensino,
+        instituicoes_ensino,
         qtd_alunos,
         cidade_origem,
         cidade_destino,
@@ -194,22 +196,14 @@ export const CitiesRouteModal = () => {
             {errors.id_prefeitura && <MessageError>{errors.id_prefeitura.message}</MessageError>}
           </Row>
           <Row>
-            <Label htmlFor="faculdade">Instituição de ensino:</Label>
-            <Select
+            <Label htmlFor="faculdade">Instituições de ensino</Label>
+            <input
               id="faculdade"
-              placeholder="Instituição de ensino"
-              {...register("id_instituicao_ensino", { valueAsNumber: true })}
-            >
-              {colleges.map((college) => (
-                <Option
-                  key={college.id}
-                  value={college.id}
-                >
-                  {college.nome}
-                </Option>
-              ))}
-            </Select>
-            {errors.id_instituicao_ensino && <MessageError>{errors.id_instituicao_ensino.message}</MessageError>}
+              type="text"
+              placeholder="Instituições de ensino"
+              {...register("instituicoes_ensino")}
+            />
+            {errors.instituicoes_ensino && <MessageError>{errors.instituicoes_ensino.message}</MessageError>}
           </Row>
           <Row>
             <Label htmlFor="cidade_origem">Cidade origem:</Label>

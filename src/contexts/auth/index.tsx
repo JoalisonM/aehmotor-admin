@@ -53,7 +53,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const handleUser = useCallback(async () => {
     const newUser = await getMe();
-    setUser(newUser);
+    if(newUser) {
+      setUser(newUser);
+    }
 
     localStorage.setItem(STORAGE_KEYS.USER_KEY, JSON.stringify({
       userId: newUser && newUser.id

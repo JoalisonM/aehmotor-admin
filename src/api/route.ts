@@ -5,7 +5,7 @@ export interface RouteProps {
   id_motorista: number;
   id_veiculo: number;
   id_prefeitura: number;
-  id_instituicao_ensino: number;
+  instituicoes_ensino: string;
   cidade_origem: string;
   cidade_destino: string;
   qtd_alunos: number;
@@ -17,7 +17,7 @@ export interface CreateRouteInput {
   id_motorista: number;
   id_veiculo: number;
   id_prefeitura: number;
-  id_instituicao_ensino: number;
+  instituicoes_ensino: Array<string>;
   cidade_origem: string;
   cidade_destino: string;
   qtd_alunos: number;
@@ -30,7 +30,7 @@ export interface UpdateRouteInput {
   id_motorista: number;
   id_veiculo: number;
   id_prefeitura: number;
-  id_instituicao_ensino: number;
+  instituicoes_ensino: Array<string>;
   cidade_origem: string;
   cidade_destino: string;
   qtd_alunos: number;

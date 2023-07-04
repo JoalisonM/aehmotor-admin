@@ -91,7 +91,7 @@ export const RegisterEmployee = () => {
           <FormHeader>
             <h1>Criar uma conta</h1>
           </FormHeader>
-          <Fieldset cols={false}>
+          <Fieldset>
             <Label htmlFor="nome">Nome completo</Label>
             <Input
               id="nome"
@@ -101,7 +101,7 @@ export const RegisterEmployee = () => {
             {errors.nome && <MessageError>{errors.nome.message}</MessageError>}
           </Fieldset>
 
-          <Fieldset cols={false}>
+          <Fieldset>
               <Label htmlFor="email">E-mail</Label>
               <Input
                 id="email"
@@ -134,12 +134,12 @@ export const RegisterEmployee = () => {
             </div>
           </Fieldset>
 
-          <Fieldset cols={false}>
+          <Fieldset>
               <Label htmlFor="cargo">Cargo</Label>
               <Input
                 id="cargo"
                 type="cargo"
-                placeholder="Digite o seu e-mail"
+                placeholder="Digite o seu cargo"
                 {...register("cargo")}
               />
               {errors.cargo && <MessageError>{errors.cargo.message}</MessageError>}
