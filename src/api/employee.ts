@@ -8,6 +8,7 @@ export interface EmployeeProps {
   telefone: string;
   senha: string;
   cargo: string;
+  tipo: string;
 }
 
 export interface CreateEmployeeInput {

@@ -14,6 +14,7 @@ import { CollegesContextProvider } from "./hooks/useColleges";
 import { EmployeesContextProvider } from "./hooks/useEmployees";
 import { PrefecturesContextProvider } from "./hooks/usePrefectures";
 import { CitiesRoutesContextProvider } from "./hooks/useCitiesRoutes";
+import { NotificationProvider } from "./contexts/notification";
 
 function App() {
   globalStyles();
@@ -32,7 +33,9 @@ function App() {
                         <DriversContextProvider>
                           <PrefecturesContextProvider>
                             <CitiesRoutesContextProvider>
-                              <Router />
+                              <NotificationProvider>
+                                <Router />
+                              </NotificationProvider>
                             </CitiesRoutesContextProvider>
                           </PrefecturesContextProvider>
                         </DriversContextProvider>

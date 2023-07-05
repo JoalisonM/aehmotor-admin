@@ -1,9 +1,10 @@
 import { createContext } from "use-context-selector";
 
 import { LoginProps } from "../../api/authenticator";
+import { EmployeeProps } from "../../api/employee";
 
 interface AuthContextData {
-  user: any | null;
+  user: EmployeeProps | null;
   loading: boolean;
   signOut: () => void;
   loadingUser: boolean;

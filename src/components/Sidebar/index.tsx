@@ -9,6 +9,7 @@ import {
   Buildings,
   ChartBar,
   GraduationCap,
+  BellSimpleRinging,
   IdentificationCard,
 } from "phosphor-react";
 import { useNavigate } from "react-router-dom";
@@ -67,13 +68,26 @@ const menuItems = {
   },
 };
 
+const menuItemsDriver = {
+  DASHBOARD: {
+    path: "/dashboard",
+    name: "Dashboard",
+    icon: <ChartBar size={18} weight="fill" />
+  },
+  NOTIFICATION: {
+    path: "/notification",
+    name: "Notificar",
+    icon: <BellSimpleRinging size={18} weight="fill" />
+  },
+}
+
 interface SidebarProps {
   menuShown: boolean;
   onMenuShown: (value: boolean) => void;
 }
 
 export const Sidebar = ({ menuShown, onMenuShown }: SidebarProps) => {
-  const { signOut } = useAuth();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
   const handleMenuShown = () => {
@@ -95,15 +109,29 @@ export const Sidebar = ({ menuShown, onMenuShown }: SidebarProps) => {
       </Header>
       {menuShown ? (
         <>
-          {Object.entries(menuItems).map(([key, item]) => (
-            <Item
-              key={key}
-              to={item.path}
-            >
-              {item.icon}
-              <span>{item.name}</span>
-            </Item>
-          ))}
+          {
+            user && user.tipo === "motorista" ? (
+              Object.entries(menuItemsDriver).map(([key, item]) => (
+                <Item
+                  key={key}
+                  to={item.path}
+                >
+                  {item.icon}
+                  <span>{item.name}</span>
+                </Item>
+              ))
+            ): (
+              Object.entries(menuItems).map(([key, item]) => (
+                <Item
+                  key={key}
+                  to={item.path}
+                >
+                  {item.icon}
+                  <span>{item.name}</span>
+                </Item>
+              ))
+            )
+          }
           <SignOutButton
             menuShown={menuShown}
             onClick={() => handleSignOut()}
@@ -114,26 +142,52 @@ export const Sidebar = ({ menuShown, onMenuShown }: SidebarProps) => {
         </>
       ) : (
           <>
-            {Object.entries(menuItems).map(([key, item]) => (
-              <Tooltip.Provider key={key} delayDuration={200}>
-                <Tooltip.Root>
-                  <Tooltip.Trigger asChild>
-                    <Item
-                      to={item.path}
-                      menuShown={menuShown}
-                    >
-                      {item.icon}
-                    </Item>
-                  </Tooltip.Trigger>
-                  <Tooltip.Portal>
-                    <TooltipContent side="right" sideOffset={5}>
-                      {item.name}
-                      <TooltipArrow />
-                    </TooltipContent>
-                  </Tooltip.Portal>
-                </Tooltip.Root>
-              </Tooltip.Provider>
-            ))}
+            {
+              user && user.tipo === "motorista" ? (
+                Object.entries(menuItemsDriver).map(([key, item]) => (
+                  <Tooltip.Provider key={key} delayDuration={200}>
+                    <Tooltip.Root>
+                      <Tooltip.Trigger asChild>
+                        <Item
+                          to={item.path}
+                          menuShown={menuShown}
+                        >
+                          {item.icon}
+                        </Item>
+                      </Tooltip.Trigger>
+                      <Tooltip.Portal>
+                        <TooltipContent side="right" sideOffset={5}>
+                          {item.name}
+                          <TooltipArrow />
+                        </TooltipContent>
+                      </Tooltip.Portal>
+                    </Tooltip.Root>
+                  </Tooltip.Provider>
+                ))
+              )
+              : (
+                Object.entries(menuItems).map(([key, item]) => (
+                  <Tooltip.Provider key={key} delayDuration={200}>
+                    <Tooltip.Root>
+                      <Tooltip.Trigger asChild>
+                        <Item
+                          to={item.path}
+                          menuShown={menuShown}
+                        >
+                          {item.icon}
+                        </Item>
+                      </Tooltip.Trigger>
+                      <Tooltip.Portal>
+                        <TooltipContent side="right" sideOffset={5}>
+                          {item.name}
+                          <TooltipArrow />
+                        </TooltipContent>
+                      </Tooltip.Portal>
+                    </Tooltip.Root>
+                  </Tooltip.Provider>
+                ))
+              )
+            }
             <SignOutButton
               menuShown={menuShown}
               onClick={() => handleSignOut()}

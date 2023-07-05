@@ -54,8 +54,6 @@ export const Select = (props: SelectProps) => {
           <SelectRadix.Group>
             <SelectLabel>{label}</SelectLabel>
               {items && items.map((item) => {
-                console.log("item: ", item);
-
                 return (
                   <SelectItem
                     ref={ref}

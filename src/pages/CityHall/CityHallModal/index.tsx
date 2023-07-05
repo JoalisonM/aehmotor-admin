@@ -81,8 +81,6 @@ export const CityHallModal = () => {
   const handleCreateNewAddress = async (data: NewAddressFormInputs) => {
     const { nome, secretario, endereco } = data;
 
-    console.log("endereco: ", endereco);
-
     if (!cityHall.id) {
       createCityHall({
         nome,

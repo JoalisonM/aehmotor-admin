@@ -20,9 +20,9 @@ export const SelectItem = (props: SelectItemProps) => {
     onChangeValue,
   } = props;
 
-  const handleChangeValue = (value: any) => {
-    console.log(value);
-  };
+  // const handleChangeValue = (value: any) => {
+  //   console.log(value);
+  // };
 
   return (
     <StyledItem

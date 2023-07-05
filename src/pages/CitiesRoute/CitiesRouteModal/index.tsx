@@ -22,9 +22,9 @@ import { Option, Select } from "../../../styles/components/select";
 
 const newCitiesRouteModalFormSchema = z.object({
   id_veiculo: z.number(),
-  id_motorista: z.number(),
+  turno: z.string(),
   id_prefeitura: z.number(),
-  instituicoes_ensino: z.array(z.string()),
+  instituicoes_ensino: z.string(),
   cidade_origem: z.string()
     .nonempty("A cidade de origem é obrigatória")
     .trim()
@@ -81,11 +81,10 @@ export const CitiesRouteModal = () => {
   }, [fetchVehicles]);
 
   useEffect(() => {
-    let instituicoes = citiesRoute.instituicoes_ensino.split("")
     setValue("id_veiculo", citiesRoute.id_veiculo);
-    setValue("id_motorista", citiesRoute.id_motorista);
+    setValue("turno", citiesRoute.turno);
     setValue("id_prefeitura", citiesRoute.id_prefeitura);
-    setValue("instituicoes_ensino", [citiesRoute.instituicoes_ensino]);
+    setValue("instituicoes_ensino", citiesRoute.instituicoes_ensino);
     setValue("cidade_origem", citiesRoute.cidade_origem);
     setValue("cidade_destino", citiesRoute.cidade_destino);
     setValue("qtd_alunos", citiesRoute.qtd_alunos);
@@ -94,18 +93,17 @@ export const CitiesRouteModal = () => {
   }, [citiesRoute]);
 
   const handleCreateNewPessoa = async (data: NewCitiesRouteFormInputs) => {
-    const { id_veiculo, id_motorista, id_prefeitura, instituicoes_ensino,
+    const { id_veiculo, turno, id_prefeitura, instituicoes_ensino,
       cidade_origem, cidade_destino, qtd_alunos, horario_chegada,
       horario_saida,
     } = data;
-    const instituicoes = citiesRoute.instituicoes_ensino.split("")
 
     if (!citiesRoute.id) {
       createCitiesRoute({
         id_veiculo,
-        id_motorista,
+        turno,
         id_prefeitura,
-        instituicoes_ensino: instituicoes,
+        instituicoes_ensino,
         qtd_alunos,
         cidade_origem,
         cidade_destino,
@@ -118,7 +116,7 @@ export const CitiesRouteModal = () => {
       updateCitiesRoute({
         id: citiesRoute.id,
         id_veiculo,
-        id_motorista,
+        turno,
         id_prefeitura,
         instituicoes_ensino,
         qtd_alunos,
@@ -161,24 +159,6 @@ export const CitiesRouteModal = () => {
             {errors.id_veiculo && <MessageError>{errors.id_veiculo.message}</MessageError>}
           </Row>
           <Row>
-            <Label htmlFor="motorista">Motorista:</Label>
-            <Select
-              id="motorista"
-              placeholder="Motorista"
-              {...register("id_motorista", { valueAsNumber: true })}
-            >
-              {drivers.map((driver) => (
-                <Option
-                  key={driver.id}
-                  value={driver.id}
-                >
-                  {driver.nome}
-                </Option>
-              ))}
-            </Select>
-            {errors.id_motorista && <MessageError>{errors.id_motorista.message}</MessageError>}
-          </Row>
-          <Row>
             <Label htmlFor="prefeitura">Prefeitura:</Label>
             <Select
               placeholder="prefeitura"
@@ -204,6 +184,16 @@ export const CitiesRouteModal = () => {
               {...register("instituicoes_ensino")}
             />
             {errors.instituicoes_ensino && <MessageError>{errors.instituicoes_ensino.message}</MessageError>}
+          </Row>
+          <Row>
+            <Label htmlFor="turno">Turno:</Label>
+            <input
+              id="turno"
+              type="text"
+              placeholder="Turno"
+              {...register("turno")}
+            />
+            {errors.turno && <MessageError>{errors.turno.message}</MessageError>}
           </Row>
           <Row>
             <Label htmlFor="cidade_origem">Cidade origem:</Label>

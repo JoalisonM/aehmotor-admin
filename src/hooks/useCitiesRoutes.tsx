@@ -52,13 +52,13 @@ export const CitiesRoutesContextProvider = ({ children }: CitiesRoutesContextPro
 
   const createCitiesRoute = useCallback(
     async (data: CreateRouteInput) => {
-      const { id_veiculo, id_motorista, id_prefeitura, instituicoes_ensino,
+      const { id_veiculo, turno, id_prefeitura, instituicoes_ensino,
         cidade_origem, cidade_destino, horario_chegada, horario_saida, qtd_alunos} = data;
 
       const response = await Route.create(
         {
           id_veiculo,
-          id_motorista,
+          turno,
           id_prefeitura,
           instituicoes_ensino,
           qtd_alunos,
@@ -75,14 +75,14 @@ export const CitiesRoutesContextProvider = ({ children }: CitiesRoutesContextPro
 
   const updateCitiesRoute = useCallback(
     async (data: UpdateRouteInput) => {
-      const { id, id_veiculo, id_motorista, id_prefeitura, instituicoes_ensino,
+      const { id, id_veiculo, turno, id_prefeitura, instituicoes_ensino,
         cidade_origem, cidade_destino, horario_chegada, horario_saida, qtd_alunos } = data;
 
       const response = await Route.update(
         {
           id,
           id_veiculo,
-          id_motorista,
+          turno,
           id_prefeitura,
           instituicoes_ensino,
           qtd_alunos,

@@ -4,7 +4,7 @@ import { useContextSelector } from "use-context-selector";
 import { useLogin } from "../../hooks/useLogin";
 import { LoginProps } from "../../api/authenticator";
 import AuthContext from "./context";
-import { PersonProps } from "../../api/person";
+import { EmployeeProps } from "../../api/employee";
 
 const STORAGE_KEYS = {
   USER_KEY: "user-storage",
@@ -17,7 +17,7 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const { loading, getSession, logout, getMe, loadingUser } = useLogin();
-  const [user, setUser] = useState<PersonProps | null>(null);
+  const [user, setUser] = useState<EmployeeProps | null>(null);
 
   useEffect(() => {
     const validateToken = async () => {

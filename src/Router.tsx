@@ -13,6 +13,7 @@ import { CitiesRoute } from "./pages/CitiesRoute";
 import { DefaultLayout } from "./layouts/DefaultLayout";
 import { RegisterEmployee } from "./pages/RegisterEmployee";
 import { RequiredAuth } from "./contexts/auth/RequiredAuth";
+import { Notification } from "./pages/Notification";
 
 export const Router = () => {
   return (
@@ -44,6 +45,9 @@ export const Router = () => {
         } />
         <Route path="/rotas" element={
           <RequiredAuth><CitiesRoute /></RequiredAuth>
+        } />
+        <Route path="/notification" element={
+          <RequiredAuth><Notification /></RequiredAuth>
         } />
       </Route>
       <Route path="/login" element={<Login />} />

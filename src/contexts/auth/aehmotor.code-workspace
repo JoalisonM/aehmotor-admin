@@ -1,0 +1,13 @@
+{
+  "folders": [
+    {
+      "path": "../../.."
+    },
+    {
+      "path": "../../../../aehmotor-backend"
+    },
+    {
+      "path": "../../../../aehmotor-frontend"
+    }
+  ]
+}

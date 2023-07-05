@@ -51,8 +51,6 @@ export const Map = (props: MapProps) => {
     });
   };
 
-  console.log("destinationCityPosition: ", destinationCityPosition);
-
   return (
     <Dialog.Portal>
       <Overlay />

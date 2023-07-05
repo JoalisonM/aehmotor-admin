@@ -62,7 +62,6 @@ export const CitiesRoute = () => {
         <thead>
           <tr>
             <th>Id</th>
-            <th>IdFaculdade</th>
             <th>IdPrefeitura</th>
             <th>CidadeOrigem</th>
             <th>CidadeDestino</th>

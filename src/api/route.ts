@@ -2,7 +2,6 @@ import { api } from "../lib/axios";
 
 export interface RouteProps {
   id: number;
-  id_motorista: number;
   id_veiculo: number;
   id_prefeitura: number;
   instituicoes_ensino: string;
@@ -11,31 +10,32 @@ export interface RouteProps {
   qtd_alunos: number;
   horario_saida: string;
   horario_chegada: string;
+  turno: string;
 }
 
 export interface CreateRouteInput {
-  id_motorista: number;
   id_veiculo: number;
   id_prefeitura: number;
-  instituicoes_ensino: Array<string>;
+  instituicoes_ensino: string;
   cidade_origem: string;
   cidade_destino: string;
   qtd_alunos: number;
   horario_saida: string;
   horario_chegada: string;
+  turno: string;
 }
 
 export interface UpdateRouteInput {
   id: number;
-  id_motorista: number;
   id_veiculo: number;
   id_prefeitura: number;
-  instituicoes_ensino: Array<string>;
+  instituicoes_ensino: string;
   cidade_origem: string;
   cidade_destino: string;
   qtd_alunos: number;
   horario_saida: string;
   horario_chegada: string;
+  turno: string;
 }
 
 const uriRoute = "rotas"
